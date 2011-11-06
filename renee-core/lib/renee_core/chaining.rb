@@ -27,8 +27,8 @@ module Renee
             ret = nil
             callback = proc do |*callback_args|
               inner_args.concat(callback_args)
-              if @calls.size == 0
-                return blk.call(*inner_args) if blk
+              if @calls.size == 0 and blk
+                blk.call(*inner_args)
               else
                 call = @calls.shift
                 ret = @target.send(call.at(0), *call.at(1), &callback)
