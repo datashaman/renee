@@ -157,7 +157,7 @@ module Renee
     def find_template(views, name, engine=nil)
       lookup_ext = (engine || File.extname(name.to_s)[1..-1] || "*").to_s
       base_name = name.to_s.chomp(".#{lookup_ext}")
-      file_path = Dir[File.join(views, "#{base_name}.#{lookup_ext}")].first
+      file_path = Dir[File.expand_path("#{base_name}.#{lookup_ext}", views)].first
       engine ||= File.extname(file_path)[1..-1].to_sym if file_path
       [file_path, engine]
     end # find_template
