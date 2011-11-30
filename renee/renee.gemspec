@@ -21,7 +21,7 @@ Gem::Specification.new do |s|
 
   # TODO fix these deps
   %w[core render].each do |name|
-    s.add_runtime_dependency "renee-#{name}", "= #{Renee::VERSION}"
+    s.add_runtime_dependency "renee-#{name}", "#{Renee::VERSION}"
   end
   s.add_development_dependency 'minitest', "~> 2.6.1"
   s.add_development_dependency 'rake'
