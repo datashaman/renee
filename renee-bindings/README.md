@@ -32,4 +32,4 @@ Working so far:
 
     # ----
     # #<OpenStruct name="nathan", books=[#<OpenStruct title="bible", year=1999>, #<OpenStruct title="koran", year=2011>]>
-    # {:name=>"nathan", :books=>[{:title=>"bible", :year=>1999}, {:title=>"koran", :year=>2011}]}
+    # "{\"name\":\"nathan\",\"books\":[{\"title\":\"bible\",\"year\":1999},{\"title\":\"koran\",\"year\":2011}]}"
