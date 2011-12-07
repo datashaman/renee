@@ -3,6 +3,7 @@ module Renee
     module Adapters
       class PrimitiveAdapter
         attr_reader :obj
+        alias_method :to_native, :obj
 
         def self.decode(str)
           new(eval(str))

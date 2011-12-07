@@ -9,6 +9,10 @@ module Renee
         def encode
           MultiJson.encode(@obj)
         end
+
+        def to_native
+          encode
+        end
       end
     end
   end

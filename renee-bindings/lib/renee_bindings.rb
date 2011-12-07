@@ -67,7 +67,7 @@ module Renee
           end
         when 'to'
           if emitter = @adapters[split_m.last.to_sym]
-            return [emitter, :obj]
+            return [emitter, :to_native]
           end
         end
         nil
