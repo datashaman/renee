@@ -102,5 +102,38 @@ describe Renee::Render do
       }
       assert_raises(Renee::Render::TemplateNotFound) { get('/') }
     end # missing template, with engine
+
+    it "should allow partials to be rendered with locals" do
+      create_view "_foo", %Q{start\n%p= bar\nend}, :haml
+      create_view :index, %Q{%p test\n= partial("foo", :locals => { :bar => "banana"})\n%p bar}, :haml
+      mock_app {
+        path("/").get { render! "index" }
+      }
+      get('/')
+      assert_equal 200, response.status
+      assert_equal "<p>test</p>\nstart\n<p>banana</p>\nend\n<p>bar</p>\n", response.body
+    end # partials, locals
+
+    it "should allow partials to be rendered with object" do
+      create_view "_foo", %Q{start\n%p= foo\nend}, :haml
+      create_view :index, %Q{%p test\n= partial("foo", :object => "banana")\n%p bar}, :haml
+      mock_app {
+        path("/").get { render! "index" }
+      }
+      get('/')
+      assert_equal 200, response.status
+      assert_equal "<p>test</p>\nstart\n<p>banana</p>\nend\n<p>bar</p>\n", response.body
+    end # partials, object
+
+    it "should allow partials to be rendered with collection" do
+      create_view "_foo", %Q{%p= foo}, :haml
+      create_view :index, %Q{%p test\n= partial("foo", :collection => ["banana", "strawberry"])\n%p bar}, :haml
+      mock_app {
+        path("/").get { render! "index" }
+      }
+      get('/')
+      assert_equal 200, response.status
+      assert_equal "<p>test</p>\n<p>banana</p>\n\n<p>strawberry</p>\n<p>bar</p>\n", response.body
+    end # partials, collection
   end
 end

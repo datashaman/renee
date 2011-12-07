@@ -111,7 +111,42 @@ module Renee
       end
     end
 
+    ##
+    # Render a partials with collections support
+    #
+    # @return [String] The html generated from this partial.
+    #
+    # @example
+    #   partial 'photo/item', :object => @photo
+    #   partial 'photo/item', :collection => @photos
+    #   partial 'photo/item', :locals => { :foo => :bar }
+    #
+    def partial(template, options={})
+      options = { :locals => {}, :layout => false }.merge(options)
+      path            = template.to_s.split(File::SEPARATOR)
+      object_name     = path[-1].to_sym
+      path[-1]        = "_#{path[-1]}"
+      template_path   = File.join(path).to_sym
+      raise 'Partial collection specified but is nil' if options.has_key?(:collection) && options[:collection].nil?
+      if collection = options.delete(:collection)
+        options.delete(:object)
+        counter = 0
+        collection.map { |member|
+          counter += 1
+          options[:locals].merge!(object_name => member, "#{object_name}_counter".to_sym => counter)
+          render(template_path, options.dup)
+        }.join("\n")
+      else
+        if member = options.delete(:object)
+          options[:locals].merge!(object_name => member)
+        end
+        render(template_path, options.dup)
+      end
+    end
+
     private
+
+
     def render_setup(engine, options, block)
       options                    ||= {}
       options[:outvar]           ||= '@_out_buf'
