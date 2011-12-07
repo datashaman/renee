@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.summary     = %q{The super-friendly web framework rendering component}
   s.description = %q{The super-friendly web framework rendering component.}
 
-  s.rubyforge_project = "renee"
+  s.rubyforge_project = "renee-render"
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
