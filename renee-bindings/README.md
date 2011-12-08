@@ -28,7 +28,7 @@ Working so far:
     input = Bound::DefaultFactory.from_hash(data).bind_with(:person)
     puts "----"
     puts input.to_ruby.inspect
-    puts input.to_json.inspect
+    puts input.as_json.inspect
 
     # ----
     # #<OpenStruct name="nathan", books=[#<OpenStruct title="bible", year=1999>, #<OpenStruct title="koran", year=2011>]>

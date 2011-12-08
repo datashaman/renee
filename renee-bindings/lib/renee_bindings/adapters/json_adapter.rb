@@ -6,12 +6,20 @@ module Renee
           new MultiJson.decode(str)
         end
 
+        def self.type
+          "json"
+        end
+
         def encode
           MultiJson.encode(@obj)
         end
 
-        def to_native
-          encode
+        def get_attr(name)
+          @obj[name.to_s]
+        end
+
+        def set_attr(name, value)
+          @obj[name.to_s] = value
         end
       end
     end

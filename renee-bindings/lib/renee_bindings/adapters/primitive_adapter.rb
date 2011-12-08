@@ -1,13 +1,10 @@
 module Renee
   module Bindings
     module Adapters
-      class PrimitiveAdapter
-        attr_reader :obj
-        alias_method :to_native, :obj
+      class PrimitiveAdapter < BaseAdapter
+        include ArrayObjAdapter
 
-        def self.decode(str)
-          new(eval(str))
-        end
+        attr_reader :obj
 
         def self.create_list
           new(Array.new)
@@ -17,12 +14,12 @@ module Renee
           new(Hash.new)
         end
 
-        def initialize(obj)
-          @obj = obj
+        def self.type
+          "primitive"
         end
 
-        def list?
-          @obj.is_a?(Array)
+        def initialize(obj)
+          @obj = obj
         end
 
         def set_attr(name, value)
@@ -33,43 +30,6 @@ module Renee
         def get_attr(name)
           raise if list?
           wrap(@obj[name.to_sym])
-        end
-
-        def set_list_item(idx, value)
-          raise unless list?
-          @obj[idx] = value
-        end
-
-        def get_list_item(idx)
-          raise unless list?
-          wrap(self.class.new(@obj[idx]))
-        end
-
-        def get_list_size
-          raise unless list?
-          @obj.size
-        end
-
-        def encode
-          @obj.inspect
-        end
-
-        def bind_with(binding_name)
-          @binding = self.class._binding_factory.bindings[binding_name].new
-          @binding.from = self
-          self
-        end
-
-        def method_missing(m, *args, &blk)
-          if result = self.class._binding_factory.decode_method(m)
-            @binding.to_class = result.first
-            @binding.execute
-            to_representation = @binding.to.send(result.last)
-            @binding.to = nil
-            to_representation
-          else
-            super
-          end
         end
 
         def wrap(val)

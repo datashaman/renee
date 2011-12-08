@@ -1,7 +1,9 @@
 module Renee
   module Bindings
     module Adapters
-      class RubyAdapter < PrimitiveAdapter
+      class RubyAdapter < BaseAdapter
+        include ArrayObjAdapter
+
         def self.create_list
           new(Array.new)
         end
@@ -10,12 +12,8 @@ module Renee
           new(OpenStruct.new)
         end
 
-        def self.decode(str)
-          raise
-        end
-
-        def encode
-          raise
+        def self.type
+          "ruby"
         end
 
         def set_attr(name, value)
