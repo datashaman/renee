@@ -10,14 +10,14 @@ Book = Struct.new(:title)
 
 #roughly analogous 
 
-Renee::Bindings.binding(:book) do
+Renee::Bindings.binding(:books) do
   attr :title
   attr :year
 end
 
-Renee::Bindings.binding(:person) do 
+Renee::Bindings.binding(:people) do 
   attr :name
-  list :books, :book
+  attr :books, :binding => :books
 end
 
 #from to wrap them ..
@@ -32,10 +32,10 @@ end
 
 data = {:name => 'nathan', :books => [{:title => 'bible', :year => 1999}, {:title => 'koran', :year => 2011}]}
 
-input = Renee::Bindings.from_hash(data).bind_with(:person)
+input = Renee::Bindings.from_hash(data).bind_with(:people)
 #puts input.as_json
 puts "----"
-puts input.to_ruby.inspect
+puts input.as_ruby.inspect
 puts input.as_json.inspect
 
 # # JSON sematics:

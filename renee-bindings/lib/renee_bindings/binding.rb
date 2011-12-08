@@ -30,43 +30,50 @@ module Renee
       end
 
       def attr(name, opts = nil)
-        raise if @from.list?
-        @to ||= to_class.create_object
-        valid = true
-        val = from.get_attr(name)
-        validator = opts && opts[:validate]
-        case validator
-        when Proc
-          begin
-            val = validator[val]
-          rescue
-            valid = false
+        binding = opts && opts[:binding]
+        from_val = @from.get_attr(name)
+        if binding
+          if from_val.list?
+            @to ||= to_class.create_object
+            bind = self.class._binding_factory.bindings[binding].new
+            bind.to_class = to_class
+            to_array = bind.to_class.create_list
+            from_val.get_list_size.times do |i|
+              bind.to = nil
+              bind.from = from_val.get_list_item(i)
+              bind.execute
+              to_array.set_list_item(i, bind.to.obj)
+            end
+            @attrs[name] = to_array.obj
+          else
+            raise # TODO support subobject mapping
           end
-        when :int, :integer
-          begin
-            val = Integer(val)
-          rescue
-            valid = false
+        else
+          @to ||= to_class.create_object
+          valid = true
+          validator = opts && opts[:validate]
+          case validator
+          when Proc
+            begin
+              val = validator[from_val]
+            rescue
+              valid = false
+            end
+          when :int, :integer
+            begin
+              val = Integer(from_val)
+            rescue
+              valid = false
+            end
+          else
+            val = from_val
           end
+          @attrs[name] = val if valid
         end
-        @attrs[name] = val if valid
       end
 
-      def list(name, binding, &blk)
-        raise if @from.list?
-        @to ||= to_class.create_object
-        bind = self.class._binding_factory.bindings[binding].new
-        from_array = @from.get_attr(name)
-        bind.to_class = to_class
-        to_array = bind.to_class.create_list
-        from_array.get_list_size.times do |i|
-          bind.to = nil
-          bind.from = from_array.get_list_item(i)
-          bind.execute
-          to_array.set_list_item(i, bind.to.obj)
-        end
-        @attrs[name] = to_array.obj
-      end
+      #def list(name, binding, &blk)
+      #end
     end
   end
 end
