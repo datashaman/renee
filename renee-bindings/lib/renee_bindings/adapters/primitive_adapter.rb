@@ -2,9 +2,7 @@ module Renee
   module Bindings
     module Adapters
       class PrimitiveAdapter < BaseAdapter
-        include ArrayObjAdapter
-
-        attr_reader :obj
+        include ArrayObjectAdapter
 
         def self.create_list
           new(Array.new)
@@ -18,10 +16,6 @@ module Renee
           "primitive"
         end
 
-        def initialize(obj)
-          @obj = obj
-        end
-
         def set_attr(name, value)
           raise if list?
           @obj[name.to_sym] = value
@@ -29,17 +23,13 @@ module Renee
 
         def get_attr(name)
           raise if list?
-          wrap(@obj[name.to_sym])
+          @obj[name.to_sym]
         end
 
-        def wrap(val)
-          case val
-          when Array, Hash
-            self.class.new(val)
-          else
-            val
-          end
+        def get_object(name)
+          self.class.new(get_attr(name))
         end
+        alias_method :get_list, :get_object
       end
     end
   end

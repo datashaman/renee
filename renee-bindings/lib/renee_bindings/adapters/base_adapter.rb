@@ -1,7 +1,7 @@
 module Renee
   module Bindings
     module Adapters
-      module ArrayObjAdapter
+      module ArrayObjectAdapter
         def list?
           @obj.is_a?(Array)
         end
@@ -13,7 +13,17 @@ module Renee
 
         def get_list_item(idx)
           raise unless list?
-          wrap(self.class.new(@obj[idx]))
+          @obj[idx]
+        end
+
+        def get_list_object(idx)
+          raise unless list?
+          self.class.new(@obj[idx])
+        end
+
+        def get_list_list(idx)
+          raise unless list?
+          self.class.new(@obj[idx])
         end
 
         def get_list_size
@@ -33,6 +43,10 @@ module Renee
           raise
         end
 
+        def self.from_file(f)
+          decode(File.read(f))
+        end
+
         def initialize(obj)
           @obj = obj
         end
@@ -41,7 +55,19 @@ module Renee
           raise
         end
 
+        def get_object(name, value)
+          raise
+        end
+
+        def get_list(name, value)
+          raise
+        end
+
         def set_attr(name, value)
+          raise
+        end
+
+        def has_attr?(name)
           raise
         end
 

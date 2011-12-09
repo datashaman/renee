@@ -21,6 +21,11 @@ module Renee
         def set_attr(name, value)
           @obj[name.to_s] = value
         end
+
+        def get_object(name)
+          self.class.new(get_attr(name))
+        end
+        alias_method :get_list, :get_object
       end
     end
   end

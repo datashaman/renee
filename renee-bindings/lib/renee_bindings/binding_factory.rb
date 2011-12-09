@@ -28,6 +28,11 @@ module Renee
         end
       end
 
+      def wrap(type, obj)
+        wrapper = @adapters[type.to_sym]
+        wrapper.respond_to?(:decode) ? wrapper.decode(obj) : wrapper.new(obj)
+      end
+
       def respond_to?(m)
         !decode_method(m).nil? || super
       end
@@ -36,9 +41,13 @@ module Renee
         split_m = m.to_s.split(/_/, 2)
         case split_m.first
         when 'from'
-          if reader = @adapters[split_m.last.to_sym]
-            return [reader, nil]
+          if m = split_m.last.match(/^(.*?)_([^_]+)$/)
+            reader = @adapters[m[1].to_sym]
+            if reader.respond_to?("from_#{m[2]}")
+              return [reader, :"from_#{m[2]}"]
+            end
           end
+          return [@adapters[split_m.last.to_sym], nil]
         when 'as'
           if emitter = @adapters[split_m.last.to_sym]
             return [emitter, nil]
