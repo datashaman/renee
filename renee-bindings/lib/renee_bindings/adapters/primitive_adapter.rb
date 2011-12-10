@@ -2,34 +2,34 @@ module Renee
   module Bindings
     module Adapters
       class PrimitiveAdapter < BaseAdapter
-        include ArrayObjectAdapter
-
-        def self.create_list
-          new(Array.new)
+        def self.list(list)
+          PrimitiveArrayAdapter.new(list)
         end
 
-        def self.create_object
-          new(Hash.new)
+        def self.object(attrs)
+          PrimitiveHashAdapter.new(attrs)
         end
 
-        def self.type
-          "primitive"
+        def self.create(obj)
+          obj.is_a?(Array) ? PrimitiveArrayAdapter.new(obj) : PrimitiveHashAdapter.new(obj)
         end
 
-        def set_attr(name, value)
-          raise if list?
-          @obj[name.to_sym] = value
+        class PrimitiveHashAdapter < PrimitiveAdapter
+          include HashHelper
+          def initialize(hash, opts = nil)
+            # todo, assuming hashes have sym keys for now .. need to improve this.
+            @obj = {}
+            hash.each { |k,v| @obj[k.to_sym] = v }
+          end
         end
 
-        def get_attr(name)
-          raise if list?
-          @obj[name.to_sym]
-        end
+        class PrimitiveArrayAdapter < PrimitiveAdapter
+          include ArrayHelper
 
-        def get_object(name)
-          self.class.new(get_attr(name))
+          def initialize(list)
+            @obj = list
+          end
         end
-        alias_method :get_list, :get_object
       end
     end
   end

@@ -10,62 +10,31 @@ module Renee
 
       def add_adapter(name, adapter)
         factory = self
-        @adapters[name] = Class.new(adapter) do
-          define_singleton_method(:_binding_factory) { factory }
-        end
+        @adapters[name] = adapter
       end
 
-      def method_missing(m, *args, &blk)
-        if response = decode_method(m)
-          create_method = if response.last.nil?
-            response.first.respond_to?(:decode) ? :decode : :new
-          else
-            response.last
-          end
-          response.first.send(create_method, *args, &blk)
-        else
-          super
-        end
+      def bind(name, type = nil)
+        raise "Unknown binding #{name.inspect}" unless @bindings.key?(name)
+        binding = Binding.new(self, &@bindings[name])
+        binding.validate_type = type if type
+        binding
       end
 
-      def wrap(type, obj)
-        wrapper = @adapters[type.to_sym]
-        wrapper.respond_to?(:decode) ? wrapper.decode(obj) : wrapper.new(obj)
+      def bind_object(name)
+        bind(name, :object)
       end
 
-      def respond_to?(m)
-        !decode_method(m).nil? || super
-      end
-
-      def decode_method(m)
-        split_m = m.to_s.split(/_/, 2)
-        case split_m.first
-        when 'from'
-          if m = split_m.last.match(/^(.*?)_([^_]+)$/)
-            reader = @adapters[m[1].to_sym]
-            if reader.respond_to?("from_#{m[2]}")
-              return [reader, :"from_#{m[2]}"]
-            end
-          end
-          return [@adapters[split_m.last.to_sym], nil]
-        when 'as'
-          if emitter = @adapters[split_m.last.to_sym]
-            return [emitter, nil]
-          end
-        end
-        nil
+      def bind_list(name)
+        bind(name, :list)
       end
 
       def run(&blk)
         # later!
       end
 
-      def binding(name, &blk)
+      def binding(n, &blk)
         factory = self
-        bindings[name] = Class.new(Binding) do
-          define_singleton_method(:_binding_factory) { factory }
-          define_singleton_method(:_binding_blk) { blk }
-        end
+        bindings[n] = blk
       end
     end
   end

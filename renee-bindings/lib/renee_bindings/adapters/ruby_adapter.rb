@@ -2,32 +2,49 @@ module Renee
   module Bindings
     module Adapters
       class RubyAdapter < BaseAdapter
-        include ArrayObjectAdapter
-
-        def self.create_list
-          new(Array.new)
+        def self.list(list)
+          RubyListAdapter.new(list)
         end
 
-        def self.create_object
-          new(OpenStruct.new)
+        def self.object(attrs)
+          RubyObjectAdapter.new(OpenStruct.new(attrs))
         end
 
-        def self.type
-          "ruby"
+        def self.create(obj)
+          obj.is_a?(Array) ? RubyListAdapter.new(obj) : RubyObjectAdapter.new(obj)
         end
 
-        def set_attr(name, value)
-          @obj.send("#{name}=", value)
+        class RubyObjectAdapter < RubyAdapter
+          include TypedAccessors
+
+          def list?
+            false
+          end
+
+          def keys
+            @keys ||= @obj.methods.select{|m| m.name.to_s[/[^=\?]$/] && m.arity == 0}.map{|m| m.name}
+          end
+
+          def set(key, value)
+            @obj.send("#{key}=", value)
+          end
+            
+          def get(key)
+            @obj.send(key)
+          end
+            
+          def key?(key)
+            @obj.respond_to?(key)
+          end
         end
 
-        def get_attr(name)
-          @obj.send(name)
-        end
+        class RubyListAdapter < RubyAdapter
+          include ArrayHelper
 
-        def get_object(name)
-          self.class.new(get_attr(name))
+          def initialize(list)
+            @obj = list
+          end
         end
-        alias_method :get_list, :get_object
       end
     end
   end

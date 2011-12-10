@@ -1,31 +1,45 @@
 module Renee
   module Bindings
     module Adapters
-      class JSONAdapter < PrimitiveAdapter
-        def self.decode(str)
-          new MultiJson.decode(str)
+      class JsonAdapter < PrimitiveAdapter
+        def self.list(list)
+          JsonListAdapter.new(list)
         end
 
-        def self.type
-          "json"
+        def self.object(attrs)
+          JsonHashAdapter.new(attrs)
+        end
+
+        def self.create(obj)
+          obj.is_a?(Array) ? JsonListAdapter.new(obj) : JsonHashAdapter.new(obj)
+        end
+
+        def self.decode(str)
+          o = MultiJson.decode(str)
+          o.is_a?(Array) ? JsonArrayAdapter.new(o) : JsonHashAdapter.new(o)
+        end
+
+        def self.from_file(f)
+          decode(File.read(f))
         end
 
         def encode
-          MultiJson.encode(@obj)
+          MultiJson.encode(obj)
         end
 
-        def get_attr(name)
-          @obj[name.to_s]
+        class JsonHashAdapter < JsonAdapter
+          include HashHelper
+
+          def initialize(hash, opts = nil)
+            # todo, assuming hashes have sym keys for now .. need to improve this.
+            @obj = {}
+            hash.each { |k,v| @obj[k.to_sym] = v }
+          end
         end
 
-        def set_attr(name, value)
-          @obj[name.to_s] = value
+        class JsonListAdapter < JsonAdapter
+          include ArrayHelper
         end
-
-        def get_object(name)
-          self.class.new(get_attr(name))
-        end
-        alias_method :get_list, :get_object
       end
     end
   end
