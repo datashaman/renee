@@ -16,7 +16,7 @@ module Renee
 
         def self.decode(str)
           o = MultiJson.decode(str)
-          o.is_a?(Array) ? JsonArrayAdapter.new(o) : JsonHashAdapter.new(o)
+          o.is_a?(Array) ? JsonListAdapter.new(o) : JsonHashAdapter.new(o)
         end
 
         def self.from_file(f)
