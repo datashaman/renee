@@ -11,7 +11,11 @@ module Renee
         end
 
         def self.create(obj)
-          obj.is_a?(Array) ? RubyListAdapter.new(obj) : RubyObjectAdapter.new(obj)
+          if obj.respond_to?(:obj)
+            create(obj.obj)
+          else
+            obj.is_a?(Array)? RubyListAdapter.new(obj) : RubyObjectAdapter.new(obj)
+          end
         end
 
         class RubyObjectAdapter < RubyAdapter

@@ -5,8 +5,8 @@ module Renee
     class Binding
       attr_accessor :to_class, :to, :validate_type, :from
 
-      def initialize(factory, &blk)
-        @factory, @blk = factory, blk
+      def initialize(factory, binding_data)
+        @factory, @binding_data = factory, binding_data
       end
 
       def execute
@@ -106,17 +106,17 @@ module Renee
       end
 
       def list(name, binding, opts = nil)
-        bind = @factory.bindings[binding].new
-        bind.to_class = to_class
+        bind = @factory.bind_list(binding)
+        bind.to_class = @to_class
         to_array = []
         from_val = @from.get_list(name)
-        from_val.get_list_size.times do |i|
+        from_val.size.times do |i|
           bind.to = nil
-          bind.from = from_val.get_list_object(i)
+          bind.from = from_val.get_object(i)
           bind.execute
           to_array << bind.to.obj
         end
-        @attrs[name] = bind.to_class.create_list(to_array).obj
+        @attrs[name] = bind.to_class.list(to_array).obj
       end
 
       def object(name, binding, opts = nil)
@@ -127,19 +127,31 @@ module Renee
         @attrs[name] = bind.to.obj
       end
 
+      def int(name, opts = nil)
+        @attrs[name] = @from.get_int(name)
+      end
+
+      def float(name, opts = nil)
+        @attrs[name] = @from.get_float(name)
+      end
+
       private
       def execute_list
-        raise unless @validate_type == :list or @validate_type.nil?
         @attrs = []
-        instance_eval(&@blk)
-        @to = to_class.list(@attrs)
+        instance_eval(&@binding_data.binding_block)
+        @to = to_class.is_a?(Adapters::RubyAdapter) && @binding_data.ruby_list ?
+          Adapters::RubyAdapter.create(@binding_data.ruby_list.call(@attrs)) :
+          to_class.list(@attrs)
+        raise if @validate_type && @validate_type == :list && !@to.list?
       end
 
       def execute_object
-        raise unless @validate_type == :object or @validate_type.nil?
         @attrs = {}
-        instance_eval(&@blk)
-        @to = to_class.object(@attrs)
+        instance_eval(&@binding_data.binding_block)
+        @to = to_class == Adapters::RubyAdapter && @binding_data.ruby_object ?
+          Adapters::RubyAdapter.create(@binding_data.ruby_object.call(@attrs)) :
+          to_class.object(@attrs)
+        raise if @validate_type && @validate_type == :object && @to.list?
       end
     end
   end
