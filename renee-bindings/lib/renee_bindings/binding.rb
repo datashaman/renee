@@ -57,25 +57,6 @@ module Renee
         @attrs[name] = val if valid
       end
 
-      #def decode_method(m)
-      #  split_m = m.to_s.split(/_/, 2)
-      #  case split_m.first
-      #  when 'from'
-      #    if m = split_m.last.match(/^(.*?)_([^_]+)$/)
-      #      reader = @adapters[m[1].to_sym]
-      #      if reader.respond_to?("from_#{m[2]}")
-      #        return [reader, :"from_#{m[2]}"]
-      #      end
-      #    end
-      #    return [@adapters[split_m.last.to_sym], nil]
-      #  when 'as'
-      #    if emitter = @adapters[split_m.last.to_sym]
-      #      return [emitter, nil]
-      #    end
-      #  end
-      #  nil
-      #end
-
       def method_missing(m, *args, &blk)
         method_s = m.to_s
         case method_s
