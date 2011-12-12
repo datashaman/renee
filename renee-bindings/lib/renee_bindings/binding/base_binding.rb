@@ -30,8 +30,10 @@ module Renee
             execute
             to_representation = if @to.respond_to?(:encode)
               @to.encode(*args, &blk)
-            else
+            elsif @to.respond_to?(:obj)
               @to.obj
+            else
+              @to
             end
             to_representation
           else
