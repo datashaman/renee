@@ -3,7 +3,7 @@ module Renee
     class BindingFactory
       attr_reader :adapters, :bindings
 
-      BindingData = Struct.new(:binding_block, :ruby_object, :ruby_list)
+      BindingData = Struct.new(:binding_block, :ruby_generator, :binding_class)
 
       def initialize
         @adapters = {}
@@ -20,18 +20,17 @@ module Renee
       end
 
       def bind(name, type = nil)
-        raise "Unknown binding #{name.inspect}" unless @bindings.key?(name)
-        binding = Binding.new(self, @bindings[name])
-        binding.validate_type = type if type
-        binding
+        binding_data = @bindings[name]
+        raise "Unknown binding #{name.inspect}" unless binding_data
+        if type == nil or (type == :list && binding_data.binding_class != Binding::ArrayBinding)
+          Binding::IndeterminateBinding.new(self, name)
+        else
+          binding_data.binding_class.new(self, binding_data.ruby_generator, &binding_data.binding_block)
+        end
       end
 
-      def bind_ruby_object(name, &blk)
-        bindings[name].ruby_object = blk
-      end
-      
-      def bind_ruby_list(name, &blk)
-        bindings[name].ruby_list = blk
+      def set_ruby_generator(name, &blk)
+        bindings[name].ruby_generator = blk
       end
 
       def bind_object(name)
@@ -42,12 +41,21 @@ module Renee
         bind(name, :list)
       end
 
+      def bind_primitive(name)
+        bind(name, :primitive)
+      end
+
       def run(&blk)
         # later!
       end
 
-      def binding(n, &blk)
-        factory = self
+      def object_binding(n, &blk)
+        bindings[n].binding_class = Binding::ObjectBinding
+        bindings[n].binding_block = blk
+      end
+
+      def literal_binding(n, &blk)
+        bindings[n].binding_class = Binding::LiteralBinding
         bindings[n].binding_block = blk
       end
     end

@@ -2,12 +2,12 @@ module Renee
   module Bindings
     module Adapters
       class RubyAdapter < BaseAdapter
-        def self.list(list)
-          RubyListAdapter.new(list)
+        def self.list(list, &blk)
+          blk ? blk[attrs] : RubyListAdapter.new(list)
         end
 
-        def self.object(attrs)
-          RubyObjectAdapter.new(OpenStruct.new(attrs))
+        def self.object(attrs, &blk)
+          blk ? blk[attrs] : RubyObjectAdapter.new(OpenStruct.new(attrs))
         end
 
         def self.create(obj)
@@ -21,8 +21,8 @@ module Renee
         class RubyObjectAdapter < RubyAdapter
           include TypedAccessors
 
-          def list?
-            false
+          def type
+            :object
           end
 
           def keys

@@ -11,8 +11,19 @@ describe "Renee::Bindings" do
       :ruby => OpenStruct.new(:title => 'Bible'),
       :hash => {:title => "Bible"}
     }
-    Renee::Bindings.binding(:book) { attr :title }
+    Renee::Bindings.object_binding(:book) { attr :title }
     bind = Renee::Bindings.bind_object(:book)
+    assert_data_binding(bind, data)
+  end
+  
+  it "should allow binding to lists of literals" do
+    data = {
+      :json => '["one","two","three"]',
+      :ruby => %w(one two three),
+      :hash => ['one', 'two', 'three']
+    }
+    Renee::Bindings.literal_binding(:number_word) { string ['one', 'two', 'three'] }
+    bind = Renee::Bindings.bind_list(:number_word)
     assert_data_binding(bind, data)
   end
   
@@ -22,11 +33,11 @@ describe "Renee::Bindings" do
       :ruby => OpenStruct.new(:name => "nathan", :favorite_book => OpenStruct.new(:title => "Bible")),
       :hash => {:name => "nathan", :favorite_book => {:title => "Bible"}}
     }
-    Renee::Bindings.binding(:person) {
+    Renee::Bindings.object_binding(:person) {
       attr :name
       object :favorite_book, :book
     }
-    Renee::Bindings.binding(:book) { attr :title }
+    Renee::Bindings.object_binding(:book) { attr :title }
     bind = Renee::Bindings.bind_object(:person)
     assert_data_binding(bind, data)
   end
@@ -37,7 +48,7 @@ describe "Renee::Bindings" do
       :ruby => OpenStruct.new(:name => "nathan", :age => 23),
       :hash => {:name => "nathan", :age => 23}
     }
-    Renee::Bindings.binding(:person) {
+    Renee::Bindings.object_binding(:person) {
       attr :name
       int :age
     }
@@ -51,7 +62,7 @@ describe "Renee::Bindings" do
       :ruby => OpenStruct.new(:name => "nathan", :height => 23.9),
       :hash => {:name => "nathan", :height => 23.9}
     }
-    Renee::Bindings.binding(:person) {
+    Renee::Bindings.object_binding(:person) {
       attr :name
       float :height
     }
@@ -65,16 +76,16 @@ describe "Renee::Bindings" do
       :ruby => OpenStruct.new(:name => "nathan", :favorite_books => [OpenStruct.new(:title => "Bible")]),
       :hash => {:name => "nathan", :favorite_books => [{:title => "Bible"}]}
     }
-    Renee::Bindings.binding(:author) { attr :name; list :favorite_books, :book }
-    Renee::Bindings.binding(:book) { attr :title }
+    Renee::Bindings.object_binding(:author) { attr :name; list :favorite_books, :book }
+    Renee::Bindings.object_binding(:book) { attr :title }
     bind = Renee::Bindings.bind_object(:author)
     assert_data_binding(bind, data)
   end
   
   it "should allow wrapping of objects" do
     data = '{"name":"nathan","favorite_book":{"title":"Bible"}}'
-    Renee::Bindings.binding(:author) { attr :name; object :favorite_book, :books }
-    Renee::Bindings.binding(:book) { attr :title }
+    Renee::Bindings.object_binding(:author) { attr :name; object :favorite_book, :books }
+    Renee::Bindings.object_binding(:book) { attr :title }
     j = Renee::Bindings.bind(:book).wrap_json(data)
     assert_equal "nathan", j.get(:name)
     assert_equal "Bible", j.get_object(:favorite_book).get(:title)
@@ -82,8 +93,8 @@ describe "Renee::Bindings" do
   
   it "should support loading from a path" do
     File.open('/tmp/jjj', "w") { |f| f << '{"name":"nathan","favorite_book":{"title":"Bible"}}' }
-    Renee::Bindings.binding(:author) { attr :name; object :favorite_book, :book }
-    Renee::Bindings.binding(:book) { attr :title }
+    Renee::Bindings.object_binding(:author) { attr :name; object :favorite_book, :book }
+    Renee::Bindings.object_binding(:book) { attr :title }
     r = Renee::Bindings.bind_object(:author).from_json_file('/tmp/jjj').as_ruby
     assert_equal "nathan", r.name
     assert_equal "Bible", r.favorite_book.title

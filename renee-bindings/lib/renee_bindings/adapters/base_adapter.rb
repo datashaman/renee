@@ -19,13 +19,13 @@ module Renee
       module TypedAccessors
         def get_object(name)
           obj = self.class.create(get(name))
-          raise if obj.list?
+          raise unless obj.type == :object
           obj
         end
 
         def get_list(name)
           obj = self.class.create(get(name))
-          raise unless obj.list?
+          raise unless obj.type == :list
           obj
         end
 
@@ -46,8 +46,8 @@ module Renee
 
       module ArrayHelper
         include TypedAccessors
-        def list?
-          true
+        def type
+          :list
         end
 
         def size
@@ -66,8 +66,8 @@ module Renee
       module HashHelper
         include TypedAccessors
 
-        def list?
-          false
+        def type
+          :object
         end
 
         def key?(k)
