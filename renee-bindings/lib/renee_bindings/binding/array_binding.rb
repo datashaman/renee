@@ -9,10 +9,15 @@ module Renee
 
         def all_elements(type)
           bind = @factory.bind(type)
+          bind_data = @factory.bind_data(type)
           bind.to_class = @to_class
           @from.size.times do |i|
             bind.to = nil
-            bind.from = @from.get_object(i)
+            case bind_data.binding_type
+            when :list   then bind.from = @from.get_list(i)
+            when :object then bind.from = @from.get_object(i)
+            else              bind.from = @from.get(i)
+            end
             bind.execute
             @attrs << bind.to
           end

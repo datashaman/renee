@@ -3,7 +3,7 @@ module Renee
     class BindingFactory
       attr_reader :adapters, :bindings
 
-      BindingData = Struct.new(:binding_block, :ruby_generator, :binding_class)
+      BindingData = Struct.new(:binding_block, :ruby_generator, :binding_class, :binding_type)
 
       def initialize
         @adapters = {}
@@ -29,6 +29,10 @@ module Renee
         end
       end
 
+      def bind_data(name)
+        @bindings[name] or raise "Unknown binding #{name.inspect}"
+      end
+
       def set_ruby_generator(name, &blk)
         bindings[name].ruby_generator = blk
       end
@@ -50,13 +54,17 @@ module Renee
       end
 
       def object_binding(n, &blk)
-        bindings[n].binding_class = Binding::ObjectBinding
-        bindings[n].binding_block = blk
+        b = bindings[n]
+        b.binding_class = Binding::ObjectBinding
+        b.binding_type = :object
+        b.binding_block = blk
       end
 
       def literal_binding(n, &blk)
-        bindings[n].binding_class = Binding::LiteralBinding
-        bindings[n].binding_block = blk
+        b = bindings[n]
+        b.binding_class = Binding::LiteralBinding
+        b.binding_type = :literal
+        b.binding_block = blk
       end
     end
   end
