@@ -12,7 +12,7 @@ module Renee
           bind.to_class = @to_class
           @from.size.times do |i|
             bind.to = nil
-            bind.from = @from.get(i)
+            bind.from = @from.get_object(i)
             bind.execute
             @attrs << bind.to
           end
