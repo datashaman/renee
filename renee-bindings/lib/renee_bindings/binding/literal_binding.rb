@@ -8,8 +8,8 @@ module Renee
         end
 
         def execute
-          instance_eval(&binding_block)
-          @to = @creator[@to] if @creator
+          instance_eval(&@data.binding_block)
+          @to = @data.ruby_generator[@to] if @data.ruby_generator
           self
         end
       end

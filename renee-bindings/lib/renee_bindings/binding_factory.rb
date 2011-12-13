@@ -22,11 +22,18 @@ module Renee
       def bind(name, type = nil)
         binding_data = @bindings[name]
         raise "Unknown binding #{name.inspect}" unless binding_data
-        if type == nil or (type == :list && binding_data.binding_class != Binding::ArrayBinding)
+        if type == nil or (type == :list && binding_data.binding_type != type)
           Binding::IndeterminateBinding.new(self, name)
         else
-          binding_data.binding_class.new(self, binding_data.ruby_generator, &binding_data.binding_block)
+          binding_data.binding_class.new(self, binding_data)
         end
+      end
+
+      def greedy_array_binding(name)
+        data = BindingData.new(proc{
+          all_elements name
+        }, nil, Binding::ArrayBinding, :list)
+        Binding::ArrayBinding.new(self, data)
       end
 
       def bind_data(name)
@@ -55,14 +62,12 @@ module Renee
 
       def object_binding(n, &blk)
         b = bindings[n]
-        b.binding_class = Binding::ObjectBinding
         b.binding_type = :object
         b.binding_block = blk
       end
 
       def literal_binding(n, &blk)
         b = bindings[n]
-        b.binding_class = Binding::LiteralBinding
         b.binding_type = :literal
         b.binding_block = blk
       end

@@ -71,8 +71,8 @@ module Renee
 
         def execute
           @attrs = {}
-          instance_eval(&binding_block)
-          @to = to_class.object(@attrs, &@creator)
+          instance_eval(&@data.binding_block)
+          @to = to_class.object(@attrs, &@data.ruby_generator)
           self
         end
       end

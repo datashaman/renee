@@ -2,7 +2,7 @@ module Renee
   module Bindings
     module Binding
       class ArrayBinding < BaseBinding
-        def initialize(factory, creator = nil, &blk)
+        def initialize(factory, data)
           super
           @position = 0
         end
@@ -25,8 +25,8 @@ module Renee
 
         def execute
           @attrs = []
-          instance_eval(&binding_block)
-          @to = to_class.list(@attrs, &@creator)
+          instance_eval(&@data.binding_block)
+          @to = to_class.list(@attrs, &@data.ruby_generator)
           self
         end
       end

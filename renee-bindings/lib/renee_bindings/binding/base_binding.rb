@@ -5,8 +5,8 @@ module Renee
         attr_accessor :to_class, :to, :from
         attr_reader :binding_block
 
-        def initialize(factory, creator = nil, &blk)
-          @factory, @creator, @binding_block = factory, creator, blk
+        def initialize(factory, data)
+          @factory, @data = factory, data
         end
 
         def method_missing(m, *args, &blk)
@@ -52,10 +52,7 @@ module Renee
           binding = if @from.is_a?(Adapters::BaseAdapter)
             case @from.type
             when :list
-              binding_name = @binding_name
-              binding = ArrayBinding.new(@factory) do
-                all_elements binding_name
-              end
+              binding = @factory.greedy_array_binding(@binding_name)
             when :object
               binding = @factory.bind_object(@binding_name)
             end
