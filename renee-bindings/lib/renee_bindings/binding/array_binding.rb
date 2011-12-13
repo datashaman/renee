@@ -13,7 +13,7 @@ module Renee
           bind.to_class = @to_class
           @from.size.times do |i|
             bind.to = nil
-            case bind_data.binding_type
+            case bind_data.type
             when :list   then bind.from = @from.get_list(i)
             when :object then bind.from = @from.get_object(i)
             else              bind.from = @from.get(i)
@@ -25,8 +25,8 @@ module Renee
 
         def execute
           @attrs = []
-          instance_eval(&@data.binding_block)
-          @to = to_class.list(@attrs, &@data.ruby_generator)
+          instance_eval(&@data.block)
+          @to = to_class.list(@attrs, &@data.generator)
           self
         end
       end

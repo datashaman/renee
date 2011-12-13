@@ -3,7 +3,12 @@ module Renee
     class BindingFactory
       attr_reader :adapters, :bindings
 
-      BindingData = Struct.new(:binding_block, :ruby_generator, :binding_class, :binding_type)
+      class BindingData
+        attr_accessor :type, :generator, :block
+        def initialize(type, generator = nil, &block)
+          @type, @generator, @block = type, generator, block
+        end
+      end
 
       def initialize
         @adapters = {}
@@ -16,23 +21,27 @@ module Renee
       end
 
       def reset!
-        @bindings = Hash.new{|h, k| h[k] = BindingData.new}
+        @bindings = {}
       end
 
       def bind(name, type = nil)
         binding_data = @bindings[name]
         raise "Unknown binding #{name.inspect}" unless binding_data
-        if type == nil or (type == :list && binding_data.binding_type != type)
+        if type == nil or (type == :list && binding_data.type != type)
           Binding::IndeterminateBinding.new(self, name)
         else
-          binding_data.binding_class.new(self, binding_data)
+          binding_class = case binding_data.type
+          when :list    then Binding::ArrayBinding
+          when :object  then Binding::ObjectBinding
+          when :literal then Binding::LiteralBinding
+          else               raise "Unknown binding type #{binding_data.type}"
+          end
+          binding_class.new(self, binding_data)
         end
       end
 
       def greedy_array_binding(name)
-        data = BindingData.new(proc{
-          all_elements name
-        }, nil, Binding::ArrayBinding, :list)
+        data = BindingData.new(:list) { all_elements name }
         Binding::ArrayBinding.new(self, data)
       end
 
@@ -41,7 +50,7 @@ module Renee
       end
 
       def set_ruby_generator(name, &blk)
-        bindings[name].ruby_generator = blk
+        bindings[name].generator = blk
       end
 
       def bind_object(name)
@@ -61,15 +70,15 @@ module Renee
       end
 
       def object_binding(n, &blk)
-        b = bindings[n]
-        b.binding_type = :object
-        b.binding_block = blk
+        bindings[n] = BindingData.new(:object, &blk)
       end
 
       def literal_binding(n, &blk)
-        b = bindings[n]
-        b.binding_type = :literal
-        b.binding_block = blk
+        bindings[n] = BindingData.new(:literal, &blk)
+      end
+
+      def array_binding(n, &blk)
+        bindings[n] = BindingData.new(:list, &blk)
       end
     end
   end

@@ -3,7 +3,6 @@ module Renee
     module Binding
       class BaseBinding
         attr_accessor :to_class, :to, :from
-        attr_reader :binding_block
 
         def initialize(factory, data)
           @factory, @data = factory, data
