@@ -8,6 +8,10 @@ module Renee
           @factory, @data = factory, data
         end
 
+        def type
+          @data.type
+        end
+
         def method_missing(m, *args, &blk)
           method_s = m.to_s
           case method_s
@@ -42,9 +46,8 @@ module Renee
       end
 
       class IndeterminateBinding < BaseBinding
-        def initialize(factory, binding_name)
-          @factory = factory
-          @binding_name = binding_name
+        def initialize(factory, data, binding_name)
+          @factory, @data, @binding_name = factory, data, binding_name
         end
 
         def execute

@@ -10,6 +10,10 @@ module Renee
           raise
         end
 
+        def self.from_file(f)
+          decode(File.read(f))
+        end
+
         attr_reader :obj
         def initialize(obj)
           @obj = obj

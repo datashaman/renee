@@ -19,10 +19,6 @@ module Renee
           o.is_a?(Array) ? JsonListAdapter.new(o) : JsonHashAdapter.new(o)
         end
 
-        def self.from_file(f)
-          decode(File.read(f))
-        end
-
         def encode
           MultiJson.encode(obj)
         end

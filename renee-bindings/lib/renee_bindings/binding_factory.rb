@@ -28,7 +28,7 @@ module Renee
         binding_data = @bindings[name]
         raise "Unknown binding #{name.inspect}" unless binding_data
         if type == nil or (type == :list && binding_data.type != type)
-          Binding::IndeterminateBinding.new(self, name)
+          Binding::IndeterminateBinding.new(self, binding_data, name)
         else
           binding_class = case binding_data.type
           when :list    then Binding::ArrayBinding
@@ -43,10 +43,6 @@ module Renee
       def greedy_array_binding(name)
         data = BindingData.new(:list) { all_elements name }
         Binding::ArrayBinding.new(self, data)
-      end
-
-      def bind_data(name)
-        @bindings[name] or raise "Unknown binding #{name.inspect}"
       end
 
       def set_ruby_generator(name, &blk)
