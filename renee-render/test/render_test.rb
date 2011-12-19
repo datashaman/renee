@@ -71,6 +71,29 @@ describe Renee::Render do
       assert_equal %Q{<div class='wrapper'><p>bar</p></div>\n}, response.body
     end # with engine and layout specified
 
+    it "should allow rendering template file with engine and layout" do
+      create_view :index,   "%p test", :haml
+      create_view :foo,     "%p= foo", :haml
+      create_view :layout,  "%div.wrapper= yield", :haml
+      create_view :layout2, "%div.wrapper2= yield", :haml
+      mock_app {
+        path("/a") { get { render! 'index', :haml } }
+        path("/b") { get { render! 'foo', :layout => :layout2, :locals => { :foo => "bar" } } }
+        path("/c") { get { render! 'foo', :layout => nil, :locals => { :foo => "bar" } } }
+      }.setup {
+        default_layout :layout
+      }
+      get('/a')
+      assert_equal 200, response.status
+      assert_equal %Q{<div class='wrapper'><p>test</p></div>\n}, response.body
+      get('/b')
+      assert_equal 200, response.status
+      assert_equal %Q{<div class='wrapper2'><p>bar</p></div>\n}, response.body
+      get('/c')
+      assert_equal 200, response.status
+      assert_equal %Q{<p>bar</p>\n}, response.body
+    end # with engine and layout specified
+
     it "should allow rendering template with different layout engines" do
       create_view :index, "%p test", :haml
       create_view :foo,   "%p= foo", :haml

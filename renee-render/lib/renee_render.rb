@@ -31,6 +31,14 @@ module Renee
       def default_encoding(encoding = nil)
         encoding ? @encoding = encoding : @encoding
       end
+
+      def default_layout(*args)
+        case args.size
+        when 0 then @layout
+        when 1 then @layout = args.first
+        else        raise
+        end
+      end
     end
 
     ##
@@ -154,7 +162,7 @@ module Renee
 
       locals         = options.delete(:locals) || {}
       views          = options.delete(:views)  || self.class.views_path || "./views"
-      layout         = options.delete(:layout)
+      layout         = options.key?(:layout) ? options[:layout] : self.class.default_layout
       layout_engine  = options.delete(:layout_engine)
       # TODO suppress template errors for layouts?
       # TODO allow content_type to be set with an option to render?
