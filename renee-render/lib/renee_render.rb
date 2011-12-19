@@ -32,6 +32,9 @@ module Renee
         encoding ? @encoding = encoding : @encoding
       end
 
+      # Gets or sets the default layout used.
+      #
+      # @param [String] layout The layout to use. e.g. "application.haml"
       def default_layout(*args)
         case args.size
         when 0 then @layout
