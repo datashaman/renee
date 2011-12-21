@@ -1,5 +1,0 @@
-require 'set'
-require 'renee_bindings/binding/base_binding'
-require 'renee_bindings/binding/object_binding'
-require 'renee_bindings/binding/literal_binding'
-require 'renee_bindings/binding/array_binding'
