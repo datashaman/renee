@@ -297,16 +297,12 @@ describe Renee::Core::Routing do
     it "should match an extension" do
       type = { 'Content-Type' => 'text/plain' }
       mock_app do
-        path '/test' do
-          extension 'html' do
-            halt [200, type, ['test html']]
-          end
-          extension 'json' do
-            halt [200, type, ['test json']]
-          end
-
-          no_extension do
-            halt [200, type, ['test nope']]
+        path('/test').get do
+          case extension
+          when 'html' then halt [200, type, ['test html']]
+          when 'json' then halt [200, type, ['test json']]
+          when nil    then halt [200, type, ['test nope']]
+          else             halt [406, type, ['unknown']]
           end
         end
         
@@ -321,20 +317,16 @@ describe Renee::Core::Routing do
       assert_equal 200,    response.status
       assert_equal 'test json', response.body
       get '/test.xml'
-      assert_equal 404,    response.status
+      assert_equal 406,    response.status
     end
 
     it "should match an extension when there is a non-specific variable before" do
       mock_app do
         var do |id|
-          extension 'html' do
-            halt "html #{id}"
-          end
-          extension 'xml' do
-            halt "xml #{id}"
-          end
-          no_extension do
-            halt "none #{id}"
+          case extension
+          when 'html' then halt "html #{id}"
+          when 'xml'  then halt "xml #{id}"
+          when nil    then halt "none #{id}"
           end
         end
       end

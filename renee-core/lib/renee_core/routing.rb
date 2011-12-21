@@ -117,24 +117,16 @@ module Renee
       alias_method :part_var, :partial_variable
       chain_method :partial_variable, :part_var
 
-      # Match an extension.
+      # Returns the matched extension. If no extension is present, returns `nil`.
       #
       # @example
       #   extension('html') { |path| halt [200, {}, path] }
       #
       # @api public
-      def extension(ext, &blk)
-        allow_continued_routing do
-          if detected_extension && match = detected_extension[ext]
-            if match == detected_extension
-              (ext_match = env['PATH_INFO'][/\/?\.#{match}/]) ?
-                with_path_part(ext_match, &blk) : blk.call
-            end
-          end
-        end
+      def extension
+        detected_extension
       end
       alias_method :ext, :extension
-      chain_method :extension, :ext
 
       # Match no extension.
       #
@@ -212,7 +204,9 @@ module Renee
       #
       # @api public
       def complete(&blk)
-        if env['PATH_INFO'] == '/' or env['PATH_INFO'] == ''
+        if detected_extension and env['PATH_INFO'] =~ /^\/?(\.#{Regexp.quote(detected_extension)}\/?)?$/
+          with_path_part(env['PATH_INFO']) { blk.call }
+        elsif detected_extension.nil? and env['PATH_INFO'] =~ /^\/?$/
           with_path_part(env['PATH_INFO']) { blk.call }
         end
       end

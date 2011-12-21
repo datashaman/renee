@@ -33,8 +33,12 @@ run Renee {
     end
   }
 
-  extension('json') { get { halt @blog.posts.map{ |p| {:contents => p.contents} }.to_json } }
-  no_extension      { get { render! 'index' } }
+  get do
+    case extension
+    when 'json' then halt @blog.posts.map { |p| {:contents => p.contents} }.to_json
+    else             render! 'index'
+    end
+  end
 }.setup {
   views_path File.expand_path(File.dirname(__FILE__) + "/views")
 }
