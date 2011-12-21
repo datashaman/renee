@@ -25,6 +25,7 @@ module Renee
   # For convience you can also used a method named #Renee
   # for decalaring new instances.
   class Core
+    # Error raised if routing fails and allow_continued_routing is set to false, which it is by default.
     NotMatchedError = Class.new(RuntimeError)
 
     # Class methods that are included in new instances of {Core} 

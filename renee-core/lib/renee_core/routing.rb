@@ -4,6 +4,12 @@ module Renee
     module Routing
       include Chaining
 
+      # Allow continued routing if a routing block fails to match
+      # 
+      # @param [Boolean] val
+      #   indicate if continued routing should be allowed.
+      #
+      # @api public
       def allow_continued_routing(val = true)
         old_allow_continued_routing = @allow_continued_routing
         begin
