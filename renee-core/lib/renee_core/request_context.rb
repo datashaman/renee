@@ -16,6 +16,8 @@ module Renee
             instance_eval(&self.class.application_block)
           rescue ClientError => e
             e.response ? instance_eval(&e.response) : halt("There was an error with your request", 400)
+          rescue NotMatchedError => e
+            # unmatched, continue on
           end
           Renee::Core::Response.new("Not found", 404).finish
         end

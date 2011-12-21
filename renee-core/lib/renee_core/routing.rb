@@ -4,6 +4,17 @@ module Renee
     module Routing
       include Chaining
 
+      def allow_continued_routing(val = true)
+        old_allow_continued_routing = @allow_continued_routing
+        begin
+          @allow_continued_routing = val
+          yield
+        ensure
+          @allow_continued_routing = old_allow_continued_routing
+        end
+      end
+      chain_method :allow_continued_routing
+
       # Match a path to respond to.
       #
       # @param [String] p
@@ -107,10 +118,12 @@ module Renee
       #
       # @api public
       def extension(ext, &blk)
-        if detected_extension && match = detected_extension[ext]
-          if match == detected_extension
-            (ext_match = env['PATH_INFO'][/\/?\.#{match}/]) ?
-              with_path_part(ext_match, &blk) : blk.call
+        allow_continued_routing do
+          if detected_extension && match = detected_extension[ext]
+            if match == detected_extension
+              (ext_match = env['PATH_INFO'][/\/?\.#{match}/]) ?
+                with_path_part(ext_match, &blk) : blk.call
+            end
           end
         end
       end
@@ -124,7 +137,9 @@ module Renee
       #
       # @api public
       def no_extension(&blk)
-        blk.call if detected_extension.nil?
+        allow_continued_routing do
+          blk.call if detected_extension.nil?
+        end
       end
       chain_method :no_extension
 
@@ -310,6 +325,7 @@ module Renee
         script_part, env['PATH_INFO'] = old_path_info[0, part.size], old_path_info[part.size, old_path_info.size]
         env['SCRIPT_NAME'] += script_part
         yield script_part
+        raise NotMatchedError unless @allow_continued_routing
         env['PATH_INFO'], env['SCRIPT_NAME'] = old_path_info, old_script_name
       end
 

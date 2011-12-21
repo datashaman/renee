@@ -5,10 +5,12 @@ describe "Route chaining" do
   it "should chaining" do
     type = { 'Content-Type' => 'text/plain' }
     mock_app do
-      path('/').get { halt [200,type,['foo']] }
-      path('bar').put { halt [200,type,['bar']] }
-      path('bar').var.put { |id| halt [200,type,[id]] }
-      path('bar').var.get.halt { |id| "wow, nice to meet you " }
+      allow_continued_routing do
+        path('/').get { halt [200,type,['foo']] }
+        path('bar').put { halt [200,type,['bar']] }
+        path('bar').var.put { |id| halt [200,type,[id]] }
+        path('bar').var.get.halt { |id| "wow, nice to meet you " }
+      end
     end
     get '/'
     assert_equal 200,   response.status

@@ -5,9 +5,9 @@ module Renee
 
       # Exception for attempting to define an env accessor cannot be written as a method name.
       # @example
-      #   env_accessor "current.user" # raises InvalidEnvName
+      #   env_accessor "current.user" # raises InvalidEnvNameError
       #   env_accessor "current.user" => :current_user # this works
-      InvalidEnvName = Class.new(RuntimeError)
+      InvalidEnvNameError = Class.new(RuntimeError)
 
       # Class-methods included by this module.
       module ClassMethods
@@ -55,7 +55,7 @@ module Renee
                 yield k, v
               end
             else
-              raise InvalidEnvName, "Called env attr for #{a.inspect}, to use this, call your env method like this. env_reader #{a.inspect} => #{a.to_s.gsub(/-\./, '_').to_sym.inspect}" if a.to_s[/[-\.]/]
+              raise InvalidEnvNameError, "Called env attr for #{a.inspect}, to use this, call your env method like this. env_reader #{a.inspect} => #{a.to_s.gsub(/-\./, '_').to_sym.inspect}" if a.to_s[/[-\.]/]
               yield a, a.to_sym
             end
           end

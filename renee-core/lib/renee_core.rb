@@ -25,6 +25,8 @@ module Renee
   # For convience you can also used a method named #Renee
   # for decalaring new instances.
   class Core
+    NotMatchedError = Class.new(RuntimeError)
+
     # Class methods that are included in new instances of {Core} 
     module ClassMethods
       include URLGeneration

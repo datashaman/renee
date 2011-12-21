@@ -18,7 +18,7 @@ describe Renee::Core::EnvAccessors do
   end
 
   it "should raise when you try to access weird env keys" do
-    assert_raises(Renee::Core::EnvAccessors::InvalidEnvName) {
+    assert_raises(Renee::Core::EnvAccessors::InvalidEnvNameError) {
       @app = Renee.core {
         self.test_test = 'hello'
       }.setup {
