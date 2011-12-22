@@ -1,4 +1,5 @@
 require 'rake/testtask'
+require 'yard'
 
 ROOT = File.expand_path(File.dirname(__FILE__))
 
@@ -55,7 +56,7 @@ end
 
 task :install => :build do
   require File.join(ROOT, 'lib', 'renee', 'version')
-  renee_gems.each do |g|
+  renee_ge/ms.each do |g|
     lsh "gem install pkg/#{g}-#{Renee::VERSION}.gem"
     puts "#{g} installed"
   end
@@ -89,9 +90,42 @@ renee_gems_tasks.each do |g, tn|
   end
 end
 
-desc "Generate documentation for the renee framework"
-task :doc do
-  renee_gems.each do |name|
-    sh "cd #{File.join(ROOT, name.to_s)} && #{Gem.ruby} -S yardoc"
+desc "Run all yard generation"
+task :yard => :'yard:run'
+
+desc "YARD run"
+task :'yard:run' do
+  Dir['*.gemspec'].to_a.each do |gemspec|
+    spec = Gem::Specification.load(gemspec)
+    puts "spec #{spec.inspect}"
+    task_name = :"yard:#{spec.name}"
+    rb_files = spec.files.select{|f| f[/^lib/]}
+    readme = spec.name == 'renee' ? "README.md" : "README-#{spec.name}.md"
+    pid = fork do # yard has some shared state somewhere. poor poor yard.
+      YARD::Rake::YardocTask.new do |t|
+        t.options = ['-o', File.expand_path("../../renee-site/public/docs/#{spec.name}", __FILE__), '--readme', readme, '--no-private', '--markup', 'markdown']
+        t.files   = rb_files
+      end
+      Rake::Task[:yard].execute
+    end
+    _, status = Process.waitpid2(pid)
+    raise unless status.success?
   end
 end
+
+#
+#
+#desc "Generate documentation for the renee framework"
+#task :doc do
+#  [:render, :core].each do |name|
+#    
+#    --output-dir doc/
+#    --readme README.md
+#    --no-private
+#    --title Renee Framework
+#    --markup markdown
+#    'renee/lib/**/*.rb'
+#    'renee-*/lib/**/*.rb'
+#  end
+#end
+#

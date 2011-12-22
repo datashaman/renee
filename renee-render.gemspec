@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
 
   s.rubyforge_project = "renee-render"
 
-  s.files         = `git ls-files -- lib/renee/render/*`.split("\n")
+  s.files         = `git ls-files -- lib/renee/render*`.split("\n")
   s.test_files    = `git ls-files -- test/renee-render/*`.split("\n") + ["test/test_helper.rb"]
   s.require_paths = ["lib"]
 
