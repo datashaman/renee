@@ -19,7 +19,7 @@ module Renee
       #     get { halt build { use Rack::ContentLength; run proc { |env| Rack::Response.new("Hello!").finish } } }
       #
       def build!(&blk)
-        run! build(&blk)
+        halt build(&blk)
       end
 
       # Runs a rack application. You must either use `app` or `blk`.
