@@ -1,5 +1,4 @@
 require 'rake/testtask'
-require 'yard'
 
 ROOT = File.expand_path(File.dirname(__FILE__))
 
@@ -90,11 +89,9 @@ renee_gems_tasks.each do |g, tn|
   end
 end
 
-desc "Run all yard generation"
-task :yard => :'yard:run'
-
-desc "YARD run"
-task :'yard:run' do
+desc "Generate YARD documentation"
+task :'yard' do
+  require 'yard'
   Dir['*.gemspec'].to_a.each do |gemspec|
     spec = Gem::Specification.load(gemspec)
     puts "spec #{spec.inspect}"

@@ -6,4 +6,5 @@ gemspec :name => 'renee-render'
 
 group :development do
   gem 'rdiscount'
+  gem 'rake'
 end
