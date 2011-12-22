@@ -13,9 +13,8 @@ Gem::Specification.new do |s|
 
   s.rubyforge_project = "renee-render"
 
-  s.files         = `git ls-files -- {lib/renee/render}`.split("\n")
-  s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
-  s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
+  s.files         = `git ls-files -- lib/renee/render/*`.split("\n")
+  s.test_files    = `git ls-files -- test/renee-render/*`.split("\n") + ["test/test_helper.rb"]
   s.require_paths = ["lib"]
 
   s.add_runtime_dependency 'rack', "~> 1.3.0"
