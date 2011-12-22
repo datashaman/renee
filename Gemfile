@@ -4,5 +4,8 @@ gemspec :name => 'renee'
 gemspec :name => 'renee-core'
 gemspec :name => 'renee-render'
 
-gem 'rdiscount'
-gem 'rake'
+group :development do
+  gem 'rdiscount'
+  gem 'rake'
+  gem 'yard', '~> 0.7.4'
+end
