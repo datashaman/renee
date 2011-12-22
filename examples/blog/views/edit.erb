@@ -1,1 +1,10 @@
 Editing <%= @post.title %>
+
+<form action="/<%= @post.id%>" method="post">
+  <input type="hidden" name="_method" value="put" />
+
+  Title
+  <input name=title value="<%= @post.title %>"><br/>
+  <textarea name=contents><%= @post.contents %></textarea><br/>
+  <input type=submit>
+</form>

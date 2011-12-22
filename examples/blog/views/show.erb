@@ -2,4 +2,9 @@
 
 <p><%= @post.contents %></p>
 
+<a href="/<%= @post.id %>/edit">Edit</a>
+<form method="post" action="/<%= @post.id %>">
+  <input type="hidden" name="_method" value="delete" />
+  <input data-confirm='Are you sure?' value="Delete" type="submit" />
+</form>
 <a href="/">See all posts</a>

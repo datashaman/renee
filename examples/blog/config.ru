@@ -4,9 +4,12 @@ require 'renee'
 require 'blog'
 require 'json'
 
+use Rack::MethodOverride
+
 blog = Blog.new
 
 run Renee {
+
   @blog = blog
 
   # find blog post and do things to it.
@@ -16,18 +19,18 @@ run Renee {
     path('edit') { render! 'edit' }
 
     get { render! 'show' }
-    delete { @post.delete!; halt :ok }
+    delete { @post.delete!; redirect! "/" }
     put {
       @post.title = request['title'] if request['title']
       @post.contents = request['contents'] if request['contents']
-      halt :ok
+      redirect! "/#{@post.id}"
     }
   end
 
   post {
     if request['title'] && request['contents']
-      @blog.new_post(request['title'], request['contents'])
-      halt :created
+      post = @blog.new_post(request['title'], request['contents'])
+      redirect! "/#{post.id}"
     else
       halt :bad_request
     end
