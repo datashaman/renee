@@ -3,4 +3,7 @@
 pkg/*
 .yardoc
 doc
-*.lock
+Gemfile.lock
+Gemfile-renee.lock
+Gemfile-renee-core.lock
+Gemfile-renee-render.lock
