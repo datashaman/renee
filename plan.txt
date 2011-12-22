@@ -1,0 +1,15 @@
+things to do to make renee more complete
+
+- sessions
+- cookie interaction
+- authentication
+- admin
+
+things to do to make renee easier to deal with
+
+- fenerators (a la padrino)
+
+things to do to explain it better
+
+- redo marking site per yehuda
+- tutorials out the wazoo
