@@ -17,12 +17,12 @@ Gem::Specification.new do |s|
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
-  s.require_paths = ["lib"]
+  s.require_paths = ["lib", "lib/renee/application"]
 
-  # TODO fix these deps
-  %w[core render].each do |name|
-    s.add_runtime_dependency "renee-#{name}", "#{Renee::VERSION}"
-  end
+  s.add_runtime_dependency 'rack', "~> 1.3.0"
+  s.add_runtime_dependency 'tilt', "~> 1.3.3"
+  s.add_runtime_dependency 'callsite', '~> 0.0.6'
+
   s.add_development_dependency 'minitest', "~> 2.6.1"
   s.add_development_dependency 'rake'
   s.add_development_dependency 'bundler'

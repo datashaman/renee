@@ -1,7 +1,6 @@
 source :rubygems
 
-gemspec :name => 'renee-core'
-gemspec :name => 'renee-render'
+gemspec :name => 'renee'
 
 group :development do
   gem 'rdiscount'
