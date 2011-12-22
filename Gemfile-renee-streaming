@@ -1,0 +1,8 @@
+source :rubygems
+
+gemspec :name => 'renee-streaming'
+
+group :development do
+  gem 'rdiscount'
+  gem 'rake'
+end
