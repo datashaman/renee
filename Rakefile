@@ -1,3 +1,5 @@
+require 'rake/testtask'
+
 ROOT = File.expand_path(File.dirname(__FILE__))
 
 task :default => :test
@@ -26,10 +28,8 @@ renee_gems = %w[
 desc "build #{renee_gems.join(', ')} gems"
 task :build do
   renee_gems.each do |g|
-    Dir.chdir(g) do
-      lsh "mkdir -p pkg && gem build #{g}.gemspec && mv *.gem pkg"
-      puts "#{g} built"
-    end
+    lsh "mkdir -p pkg && gem build #{g}.gemspec && mv *.gem pkg"
+    puts "#{g} built"
   end
 end
 
@@ -41,10 +41,8 @@ task :release => [:build, :doc] do
     sh "git tag #{version_tag}"
     puts "adding tag #{version_tag}"
     renee_gems.each do |g|
-      Dir.chdir(g) do
-        sh "gem push pkg/#{g}-#{Renee::VERSION}.gem"
-        puts "#{g} pushed"
-      end
+      sh "gem push pkg/#{g}-#{Renee::VERSION}.gem"
+      puts "#{g} pushed"
     end
     sh "git push"
     sh "git push --tags"
@@ -56,24 +54,38 @@ task :release => [:build, :doc] do
 end
 
 task :install => :build do
-  require File.join(ROOT, 'renee', 'lib', 'renee', 'version')
+  require File.join(ROOT, 'lib', 'renee', 'version')
   renee_gems.each do |g|
-    Dir.chdir(g) do
-      lsh "gem install pkg/#{g}-#{Renee::VERSION}.gem"
-      puts "#{g} installed"
-    end
+    lsh "gem install pkg/#{g}-#{Renee::VERSION}.gem"
+    puts "#{g} installed"
+  end
+end
+
+task :bundle do
+  renee_gems.each do |g|
+    sh "env BUNDLE_GEMFILE=Gemfile-#{g} bundle"
   end
 end
 
 renee_gems_tasks = Hash[renee_gems.map{|rg| [rg, :"test_#{rg.gsub('-', '_')}"]}].freeze
 
 desc "Run tests for all renee stack gems"
-task :test => renee_gems_tasks.values
+task :test do
+  renee_gems_tasks.values.each do |task|
+    Rake::Task[task].invoke
+  end
+end
 
 renee_gems_tasks.each do |g, tn|
-  desc "Run tests for #{g}"
+  desc "Run tests for #{g} (shell out)"
   task tn do
-    sh "cd #{File.join(ROOT, g)} && #{Gem.ruby} -S rake test"
+    sh "env BUNDLE_GEMFILE=Gemfile-#{g} bundle exec rake test-#{g}"
+  end
+
+  Rake::TestTask.new("test-#{g}") do |t|
+    t.libs.push "lib"
+    t.test_files = FileList[File.expand_path("../test/#{g}/**/*_test.rb", __FILE__)]
+    t.verbose = true
   end
 end
 

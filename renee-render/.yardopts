@@ -1,6 +1,0 @@
---output-dir ../../renee-site/public/doc/render
---readme README.md
---no-private
---title Renee Render
---markup markdown
-'lib/**/*.rb'

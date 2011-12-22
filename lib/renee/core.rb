@@ -1,15 +1,17 @@
 require 'rack'
-require 'renee_core/matcher'
-require 'renee_core/chaining'
-require 'renee_core/response'
-require 'renee_core/url_generation'
-require 'renee_core/exceptions'
-require 'renee_core/rack_interaction'
-require 'renee_core/request_context'
-require 'renee_core/transform'
-require 'renee_core/routing'
-require 'renee_core/responding'
-require 'renee_core/env_accessors'
+
+require 'renee/core/version'
+require 'renee/core/matcher'
+require 'renee/core/chaining'
+require 'renee/core/response'
+require 'renee/core/url_generation'
+require 'renee/core/exceptions'
+require 'renee/core/rack_interaction'
+require 'renee/core/request_context'
+require 'renee/core/transform'
+require 'renee/core/routing'
+require 'renee/core/responding'
+require 'renee/core/env_accessors'
 
 # Top-level Renee constant
 module Renee

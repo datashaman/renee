@@ -3,8 +3,6 @@ gem 'minitest'
 require 'minitest/autorun'
 gem 'rack-test'
 require 'rack/test'
-$: << File.expand_path('../../../renee_core/lib', __FILE__)
-$: << File.expand_path('../../../renee_render/lib', __FILE__)
 $: << File.expand_path('../../lib', __FILE__)
 require 'renee'
 
@@ -45,7 +43,7 @@ class MiniTest::Spec
   end
 
   def blog_app
-    file = File.join(File.dirname(__FILE__), '..', 'examples', 'blog', 'config.ru')
+    file = File.join(File.dirname(__FILE__), '..', '..', 'examples', 'blog', 'config.ru')
     Rack::Lint.new(Rack::Builder.parse_file(file)[0])
   end
 

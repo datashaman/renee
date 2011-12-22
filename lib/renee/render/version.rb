@@ -1,8 +1,8 @@
-require 'renee_core/version'
+require 'renee/version'
 
 module Renee
   module Render
     # The current version of Renee::Render
-    VERSION = Renee::Core::VERSION
+    VERSION = Renee::VERSION
   end
 end

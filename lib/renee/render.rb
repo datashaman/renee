@@ -1,5 +1,7 @@
 require 'tilt'
+
 require 'callsite'
+require 'renee/render/version'
 
 # Top-level Renee constant
 module Renee
