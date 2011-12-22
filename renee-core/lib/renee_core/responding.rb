@@ -79,7 +79,7 @@ module Renee
         when Integer then Renee::Core::Response.new("Status code #{response}", response).finish
         when Symbol  then interpret_response(HTTP_CODES[response] || response.to_s)
         when Proc    then instance_eval(&response)
-        else              raise "Unable to render #{response.inspect}"
+        else              response # pass through response
         end
       end
 
