@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.summary     = %q{The super-friendly rack helpers}
   s.description = %q{The super-friendly rack helpers.}
 
-  s.rubyforge_project = "renee"
+  s.rubyforge_project = "renee-core"
 
   s.files         = `git ls-files -- lib/renee/core*`.split("\n")
   s.test_files    = `git ls-files -- test/renee-core/*`.split("\n") + ["test/test_helper.rb"]
