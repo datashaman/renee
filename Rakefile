@@ -92,6 +92,6 @@ end
 desc "Generate documentation for the renee framework"
 task :doc do
   renee_gems.each do |name|
-    sh "cd #{File.join(ROOT, name.to_s)} && #{Gem.ruby} -S rake doc"
+    sh "cd #{File.join(ROOT, name.to_s)} && #{Gem.ruby} -S yardoc"
   end
 end

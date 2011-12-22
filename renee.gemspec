@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
-  s.require_paths = ["lib", "lib/renee/application"]
+  s.require_paths = ["lib"]
 
   s.add_runtime_dependency 'rack', "~> 1.3.0"
   s.add_runtime_dependency 'tilt', "~> 1.3.3"
