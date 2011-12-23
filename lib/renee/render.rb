@@ -1,13 +1,16 @@
 require 'tilt'
-
 require 'callsite'
-require 'renee/render/version'
+
+require 'renee/version'
 
 # Top-level Renee constant
 module Renee
   # This module is responsible for handling the rendering of templates
   # using Tilt supporting all included template engines.
   module Render
+    # Current version of Renee::Render
+    VERSION = Renee::VERSION
+
     def self.included(o)
       o.extend(ClassMethods)
     end

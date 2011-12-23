@@ -1,6 +1,11 @@
+require 'renee/version'
+
 module Renee
   module Streaming
     AsyncResponse = [-1, {}, []]
+
+    # Current version of Renee::Streaming
+    VERSION = Renee::VERSION
 
     class Stream
       def self.schedule(*) yield end

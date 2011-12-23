@@ -1,5 +1,8 @@
+require 'renee/version'
 require 'renee/core'
 require 'renee/render'
+require 'renee/streaming'
+require 'renee/url_generation'
 
 # Method for creating new Renee applications.
 # @see http://reneerb.com
@@ -16,6 +19,8 @@ module Renee
   # Main class for a Renee application. This class should be subclasses if you want to define your own Renee
   # implementations.
   class Application < Core
-    include Renee::Render
+    include Render
+    include Streaming
+    include URLGeneration
   end
 end

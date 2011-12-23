@@ -1,10 +1,19 @@
 require 'uri'
 
-module Renee
-  class Core
-    # URL generator for creating paths and URLs within your application.
-    module URLGeneration
+require 'renee/version'
 
+module Renee
+  # URL generator for creating paths and URLs within your application.
+  module URLGeneration
+    # Current version of Renee::URLGeneration
+    VERSION = Renee::VERSION
+
+    def self.included(o)
+      o.extend(ClassMethods)
+    end
+
+    # Class-methods included by this module.
+    module ClassMethods
       # Registers new paths for generation.
       # @param [Symbol] name The name of the path
       # @param [String] pattern The pattern used for generation.
@@ -30,7 +39,7 @@ module Renee
       def prefix(prefix, defaults = nil, &blk)
         generator = self
         subgenerator = Class.new {
-          include URLGeneration
+          include URLGeneration::ClassMethods
           define_method(:url_generators) { generator.send(:url_generators) }
         }.new
         subgenerator.instance_variable_set(:@generation_prefix, "#{@generation_prefix}#{prefix}")

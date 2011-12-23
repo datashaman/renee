@@ -1,10 +1,9 @@
 require 'rack'
 
-require 'renee/core/version'
+require 'renee/version'
 require 'renee/core/matcher'
 require 'renee/core/chaining'
 require 'renee/core/response'
-require 'renee/core/url_generation'
 require 'renee/core/exceptions'
 require 'renee/core/rack_interaction'
 require 'renee/core/request_context'
@@ -27,13 +26,14 @@ module Renee
   # For convience you can also used a method named #Renee
   # for decalaring new instances.
   class Core
+    # Current version of Renee::Core
+    VERSION = Renee::VERSION
+
     # Error raised if routing fails and allow_continued_routing is set to false, which it is by default.
     NotMatchedError = Class.new(RuntimeError)
 
     # Class methods that are included in new instances of {Core} 
     module ClassMethods
-      include URLGeneration
-
       # The application block used to create your application.
       attr_reader :application_block
 

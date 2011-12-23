@@ -13,9 +13,8 @@ run Renee {
   var :integer do |id|
     @post = @blog.find_post(id)
     halt 404 unless @post
-    path('edit') { render! 'edit' }
-
-    get { render! 'show' }
+    path('edit') { puts "showing edit!"; render! 'edit' }
+    get { puts "show."; render! 'show' }
     delete { @post.delete!; halt :ok }
     put {
       @post.title = request['title'] if request['title']

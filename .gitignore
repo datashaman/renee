@@ -1,10 +1,16 @@
+# other cruft
+
 *.gem
 .bundle
 pkg/*
 .yardoc
 doc
+.DS_Store
+
+# lock files
+
 Gemfile.lock
 Gemfile-renee.lock
 Gemfile-renee-core.lock
 Gemfile-renee-render.lock
-.DS_Store
+Gemfile-renee-url-generation.lock
