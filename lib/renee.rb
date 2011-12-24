@@ -1,6 +1,7 @@
 require 'renee/version'
 require 'renee/core'
 require 'renee/render'
+require 'renee/session'
 require 'renee/url_generation'
 
 # Method for creating new Renee applications.
@@ -20,5 +21,6 @@ module Renee
   class Application < Core
     include Render
     include URLGeneration
+    include Session
   end
 end
