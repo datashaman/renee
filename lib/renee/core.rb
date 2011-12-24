@@ -29,7 +29,7 @@ module Renee
     # Current version of Renee::Core
     VERSION = Renee::VERSION
 
-    # Error raised if routing fails and allow_continued_routing is set to false, which it is by default.
+    # Error raised if routing fails. Use #continue_routing to continue routing.
     NotMatchedError = Class.new(RuntimeError)
 
     # Class methods that are included in new instances of {Core} 

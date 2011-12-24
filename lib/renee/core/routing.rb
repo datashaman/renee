@@ -10,16 +10,15 @@ module Renee
       #   indicate if continued routing should be allowed.
       #
       # @api public
-      def allow_continued_routing(val = true)
-        old_allow_continued_routing = @allow_continued_routing
+      def continue_routing
+        original_env = @env.dup
         begin
-          @allow_continued_routing = val
           yield
-        ensure
-          @allow_continued_routing = old_allow_continued_routing
+        rescue NotMatchedError
+          @env = original_env
         end
       end
-      chain_method :allow_continued_routing
+      chain_method :continue_routing
 
       # Match a path to respond to.
       #
@@ -135,9 +134,7 @@ module Renee
       #
       # @api public
       def no_extension(&blk)
-        allow_continued_routing do
-          blk.call if detected_extension.nil?
-        end
+        blk.call unless detected_extension
       end
       chain_method :no_extension
 
@@ -325,8 +322,7 @@ module Renee
         script_part, env['PATH_INFO'] = old_path_info[0, part.size], old_path_info[part.size, old_path_info.size]
         env['SCRIPT_NAME'] += script_part
         yield script_part
-        raise NotMatchedError unless @allow_continued_routing
-        env['PATH_INFO'], env['SCRIPT_NAME'] = old_path_info, old_script_name
+        raise NotMatchedError
       end
 
       def request_method(method, path = nil, &blk)
