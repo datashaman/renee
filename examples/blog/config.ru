@@ -13,24 +13,25 @@ run Renee {
   var :integer do |id|
     @post = @blog.find_post(id)
     halt 404 unless @post
-    path('edit') { puts "showing edit!"; render! 'edit' }
-    get { puts "show."; render! 'show' }
-    delete { @post.delete!; halt :ok }
-    put {
-      @post.title = request['title'] if request['title']
+    path('edit').get.render! 'edit' # show editor
+    get.render! 'show'              # show post
+    delete do
+      @post.delete!
+      redirect! "/"
+    end
+    put do
+      @post.title = request['title']       if request['title']
       @post.contents = request['contents'] if request['contents']
-      halt :ok
-    }
+      redirect! "/#{@post.id}"
+    end
   end
 
-  post {
-    if request['title'] && request['contents']
-      @blog.new_post(request['title'], request['contents'])
-      halt :created
-    else
-      halt :bad_request
-    end
-  }
+  post do
+    halt :bad_request, "No title specified"    unless request['title']
+    halt :bad_request, "No contents specified" unless request['contents']
+    post = @blog.new_post(request['title'], request['contents'])
+    redirect! "/#{post.id}"
+  end
 
   get do
     case extension
@@ -39,5 +40,6 @@ run Renee {
     end
   end
 }.setup {
+  use Rack::MethodOverride
   views_path File.expand_path(File.dirname(__FILE__) + "/views")
 }
