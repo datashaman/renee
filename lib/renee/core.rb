@@ -51,7 +51,6 @@ module Renee
           register_variable_type :integer, IntegerMatcher
           register_variable_type :int, :integer
         end
-        self
       end
 
       # Runs class methods on your application.
