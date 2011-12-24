@@ -19,7 +19,8 @@ describe "Blog example" do
 
   it "should allow a POST to /" do
     post('/', :title => 'my title', :contents => 'hey hey hey')
-    assert_equal 201, response.status
+    assert_equal 302, response.status
+    assert_equal '/1', response.headers['Location']
     get('/')
     assert_equal 200, response.status
     assert_equal "  <p>
@@ -42,7 +43,8 @@ describe "Blog example" do
   it "should allow a PUT to /" do
     post('/', :title => 'my title', :contents => 'hey hey hey')
     put('/1', :title => 'my real title', :contents => 'hey hey hey')
-    assert_equal 200, response.status
+    assert_equal 302, response.status
+    assert_equal '/1', response.headers['Location']
     get('/')
     assert_equal 200, response.status
     assert_equal "  <p>
@@ -64,12 +66,15 @@ describe "Blog example" do
 
   it "should allow a DELETE to /" do
     post('/', :title => 'my title', :contents => 'hey hey hey')
-    assert_equal 201, response.status
+    assert_equal 302, response.status
+    assert_equal '/1', response.headers['Location']
+    url = response.headers['Location']
     get('/.json')
     assert_equal 200, response.status
     assert_equal "[{\"contents\":\"hey hey hey\"}]", response.body
-    delete('/1')
-    assert_equal 200, response.status
+    delete(url)
+    assert_equal 302, response.status
+    assert_equal '/', response.headers['Location']
     get('/.json')
     assert_equal 200, response.status
     assert_equal "[]", response.body

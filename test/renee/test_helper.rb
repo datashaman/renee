@@ -43,8 +43,9 @@ class MiniTest::Spec
   end
 
   def blog_app
-    file = File.join(File.dirname(__FILE__), '..', '..', 'examples', 'blog', 'config.ru')
-    Rack::Lint.new(Rack::Builder.parse_file(file)[0])
+    file = File.expand_path("../../../examples/blog/config.ru", __FILE__)
+    app = Rack::Builder.parse_file(file).first
+    @app = Rack::Lint.new(app)
   end
 
   def app
