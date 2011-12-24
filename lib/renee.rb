@@ -11,7 +11,9 @@ require 'renee/url_generation'
 #       halt "hello renee"
 #     }
 def Renee(&blk)
-  Class.new(Renee::Application).app(&blk)
+  app_class = Class.new(Renee::Application)
+  app_class.app(&blk)
+  app_class
 end
 
 # Top-level Renee constant.
