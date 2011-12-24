@@ -1,7 +1,6 @@
 require 'renee/version'
 require 'renee/core'
 require 'renee/render'
-require 'renee/streaming'
 require 'renee/url_generation'
 
 # Method for creating new Renee applications.
@@ -20,7 +19,6 @@ module Renee
   # implementations.
   class Application < Core
     include Render
-    include Streaming
     include URLGeneration
   end
 end

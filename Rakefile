@@ -22,7 +22,6 @@ end
 renee_gems = %w[
   renee-core
   renee-render
-  renee-streaming
   renee-url-generation
   renee
 ].freeze
