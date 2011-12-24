@@ -7,7 +7,9 @@ class Blog
   end
 
   def new_post(title, contents)
-    @posts << Post.new(self, @post_id += 1, title, contents)
+    post = Post.new(self, @post_id += 1, title, contents)
+    @posts << post
+    post
   end
 
   def find_post(id)
