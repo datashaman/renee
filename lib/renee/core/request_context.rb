@@ -45,7 +45,7 @@ module Renee
       end # call
 
       def init_application
-        self.class.included_modules.select{|m| m.respond_to?(:setup)}.each(&:setup)
+        self.class.included_modules.select{|m| m.respond_to?(:init_application)}.each(&:init_application)
         extend Module.new { define_method(:init_application) { } }
       end
     end

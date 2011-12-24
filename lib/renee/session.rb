@@ -28,7 +28,7 @@ module Renee
         @session_stores ||= {}
       end
 
-      def setup
+      def init_application
         if @store_type
           session_constant = Renee::Util.lookup_constant(@store_type[0])
           use session_constant, *@store_type[1], &@store_type[2]
