@@ -318,8 +318,8 @@ module Renee
       end
 
       def with_path_part(part)
-        old_path_info, old_script_name = env['PATH_INFO'], env['SCRIPT_NAME']
-        script_part, env['PATH_INFO'] = old_path_info[0, part.size], old_path_info[part.size, old_path_info.size]
+        script_part = env['PATH_INFO'][0, part.size]
+        env['PATH_INFO'] = env['PATH_INFO'].slice(part.size, env['PATH_INFO'].size)
         env['SCRIPT_NAME'] += script_part
         yield script_part
         raise NotMatchedError
