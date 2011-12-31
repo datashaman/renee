@@ -40,66 +40,6 @@ describe Renee::Core::Routing do
       assert_equal 'posted', response.body
     end
 
-    it "accepts a query string" do
-      type = { 'Content-Type' => 'text/plain' }
-      mock_app do
-        path('test') { get { halt [200, type, [env['QUERY_STRING']]] } }
-
-        path 'foo' do
-          query_string 'bar' do
-            get { halt [200,type,['bar']] }
-          end
-
-          query_string 'foo=bar' do
-            post { halt [200,type,['foo']] }
-          end
-        end
-      end
-
-      get '/test?bar'
-      assert_equal 200,   response.status
-      assert_equal 'bar', response.body
-      get '/foo?bar'
-      assert_equal 200,   response.status
-      assert_equal 'bar', response.body
-      post '/foo?foo=bar'
-      assert_equal 200,   response.status
-      assert_equal 'foo', response.body
-    end
-
-    it "accepts a set of query params (as hash)" do
-      mock_app do
-        path 'test' do
-          query :foo => :integer do |h|
-            halt "foo is #{h[:foo].inspect}"
-          end
-        end
-      end
-
-      get '/test?foo=123'
-      assert_equal 200, response.status
-      assert_equal 'foo is 123', response.body
-      get '/test?foo=bar'
-      assert_equal 404, response.status
-    end
-
-    it "accepts a set of query params (as an array)" do
-      mock_app do
-        path 'test' do
-          query :foo do |var|
-            case var
-            when 'bar'  then halt 200
-            when 'bar2' then halt 500
-            end
-          end
-        end
-      end
-      get '/test?foo=bar'
-      assert_equal 200, response.status
-      get '/test?foo=bar2'
-      assert_equal 500, response.status
-    end
-
     describe "with trailing slashes" do
       it "should ignore trailing slashes normally" do
         type = { 'Content-Type' => 'text/plain' }
@@ -468,11 +408,6 @@ describe Renee::Core::Routing do
       get '/'
       assert_equal 200,    response.status
       assert_equal 'hiya', response.body
-    end
-
-    it "should allow optional paths in the request method" do
-      blk = proc { get('/path') { halt [200, {}, "hiya"] } }
-      assert_equal [200, {}, "hiya"], renee_for('/path', &blk)
     end
   end
 end

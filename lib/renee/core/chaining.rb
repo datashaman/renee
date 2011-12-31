@@ -13,29 +13,28 @@ module Renee
     module Chaining
       # @private
       class ChainingProxy
-        def initialize(target, m, args)
+        def initialize(target, m, args = nil)
           @target, @calls = target, []
           @calls << [m, args]
         end
 
         def method_missing(m, *args, &blk)
           @calls << [m, args]
-          if blk.nil? && @target.class.private_method_defined?(:"#{m}_without_chain")
+          if blk.nil? && @target.class.respond_to?(:chainable?) && @target.class.chainable?(m)
             self
           else
             inner_args = []
             ret = nil
             callback = proc do |*callback_args|
               inner_args.concat(callback_args)
-              if @calls.size == 0 and blk
-                blk.call(*inner_args)
+              if @calls.size == 0
+                ret = blk.call(*inner_args) if blk
               else
                 call = @calls.shift
-                ret = @target.send(call.at(0), *call.at(1), &callback)
+                ret = call.at(1) ? @target.send(call.at(0), *call.at(1), &callback) : @target.send(call.at(0), &callback) 
               end
             end
-            call = @calls.shift
-            ret = @target.send(call.at(0), *call.at(1), &callback)
+            ret = callback.call
             ret
           end
         end
@@ -43,20 +42,25 @@ module Renee
 
       # @private
       module ClassMethods
-        def chain_method(*methods)
-          methods.each do |m|
-            class_eval <<-EOT, __FILE__, __LINE__ + 1
-              alias_method :#{m}_without_chain, :#{m}
-              def #{m}(*args, &blk)
-                blk.nil? ? ChainingProxy.new(self, #{m.inspect}, args) : #{m}_without_chain(*args, &blk)
-              end
-              private :#{m}_without_chain
-            EOT
-          end
+        def chainable?(m)
+          chainable_methods.include?(m)
+        end
+
+        def chainable(*methods)
+          methods.each { |m| chainable_methods << m }
+        end
+
+        def chainable_methods
+          class_variable_get(:@@chainable_methods)
         end
       end
 
+      def create_chain_proxy(method_name, *args)
+        ChainingProxy.new(self, method_name, args)
+      end
+
       def self.included(o)
+        o.class_variable_set(:@@chainable_methods, []) unless o.class_variable_defined?(:@@chainable_methods)
         o.extend(ClassMethods)
       end
     end
