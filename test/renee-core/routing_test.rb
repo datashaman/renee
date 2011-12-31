@@ -409,5 +409,16 @@ describe Renee::Core::Routing do
       assert_equal 200,    response.status
       assert_equal 'hiya', response.body
     end
+
+    it "should raise if you fail to halt" do
+      type = { 'Content-Type' => 'text/plain' }
+      mock_app do
+        get {  }
+        halt :ok
+      end
+
+      get '/'
+      assert_equal 404,    response.status
+    end
   end
 end

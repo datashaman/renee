@@ -51,17 +51,6 @@ module Renee
       end
       chainable :path
 
-      # Like #path, but requires the entire path to be consumed.
-      # @see #path
-      def whole_path(p, &blk)
-        if blk
-          path(p) { complete(&blk) }
-        else
-          create_chain_proxy(:whole_path, p)
-        end
-      end
-      chainable :whole_path
-
       # Like #path, but doesn't look for leading slashes.
       def part(p)
         if block_given?
@@ -216,16 +205,24 @@ module Renee
       # @api public
       def complete(&blk)
         if blk
-          if detected_extension and env['PATH_INFO'] =~ /^\/?(\.#{Regexp.quote(detected_extension)}\/?)?$/
-            with_path_part(env['PATH_INFO']) { blk.call }
-          elsif detected_extension.nil? and env['PATH_INFO'] =~ /^\/?$/
-            with_path_part(env['PATH_INFO']) { blk.call }
-          end
+          with_path_part(env['PATH_INFO']) { blk.call } if complete?
         else
           create_chain_proxy(:complete)
         end
       end
       chainable :complete
+
+      # Test if the path has been consumed
+      #
+      # @example
+      #   if complete?
+      #     halt "Hey, the path is done"
+      #   end
+      #
+      # @api public
+      def complete?
+        (detected_extension and env['PATH_INFO'] =~ /^\/?(\.#{Regexp.quote(detected_extension)}\/?)?$/) || (detected_extension.nil? and env['PATH_INFO'] =~ /^\/?$/)
+      end
 
       # Match only when the path is ''.
       #
@@ -306,7 +303,10 @@ module Renee
       end
 
       def request_method(method)
-        complete { yield } if env['REQUEST_METHOD'] == method
+        if env['REQUEST_METHOD'] == method && complete?
+          yield
+          raise NotMatchedError
+        end
       end
     end
   end
