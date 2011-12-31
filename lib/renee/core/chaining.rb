@@ -51,7 +51,7 @@ module Renee
         end
 
         def chainable_methods
-          class_variable_get(:@@chainable_methods)
+          send(:class_variable_get, :@@chainable_methods)
         end
       end
 
@@ -60,7 +60,7 @@ module Renee
       end
 
       def self.included(o)
-        o.class_variable_set(:@@chainable_methods, []) unless o.class_variable_defined?(:@@chainable_methods)
+        o.send(:class_variable_set, :@@chainable_methods, []) unless o.send(:class_variable_defined?, :@@chainable_methods)
         o.extend(ClassMethods)
       end
     end
