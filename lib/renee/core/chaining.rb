@@ -43,16 +43,15 @@ module Renee
       # @private
       module ClassMethods
         def chainable?(m)
-          chainable_methods.include?(m)
+          method_defined?(:"#{m}_chainable")
         end
 
         def chainable(*methods)
-          methods.each { |m| chainable_methods << m }
+          methods.each do |m|
+            define_method(:"#{m}_chainable") { }
+          end
         end
 
-        def chainable_methods
-          send(:class_variable_get, :@@chainable_methods)
-        end
       end
 
       def create_chain_proxy(method_name, *args)
@@ -60,7 +59,6 @@ module Renee
       end
 
       def self.included(o)
-        o.send(:class_variable_set, :@@chainable_methods, []) unless o.send(:class_variable_defined?, :@@chainable_methods)
         o.extend(ClassMethods)
       end
     end
