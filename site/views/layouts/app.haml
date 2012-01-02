@@ -1,0 +1,16 @@
+!!!
+%html
+  %head
+    %title Renee #{title_part}
+    %link{ :href => "/css/app.css", :rel => "stylesheet" }
+    %link{ :rel => 'icon', :href => "/img/favicon.ico" }
+    %script{ :type => 'text/javascript', :src => "/js/jquery-1.6.4.min.js" }
+    %script{ :type => 'text/javascript', :src => "/js/app.js" }
+  %body
+    %a{ :href => "https://github.com/renee-project/renee" }
+      %img{ :src => '/img/russiangithub.png', :style => 'position: absolute; top: 0; left: 0; border: 0;'}
+    .container
+      .logo
+        %a{ :href => "/" }
+          %img{ :src => "/img/reneeclean.png", :title => 'IN COMMUNIST RUSSIA RENEE FRAMEWORK YOU'}
+      = preserve(yield)
