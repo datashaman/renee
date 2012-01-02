@@ -42,7 +42,9 @@ module Renee
       #  respond("Hello", 200, "foo" => "bar")
       #
       def respond(body=[], status=200, header={}, &blk)
-        Renee::Core::Response.new(body, status, header).tap { |r| r.instance_eval(&blk) if block_given? }.finish
+        response = Renee::Core::Response.new(body, status, header)
+        response.instance_eval(&blk) if block_given?
+        response.finish
       end
 
       ##
