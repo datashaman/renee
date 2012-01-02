@@ -100,30 +100,13 @@ task :'yard' do
     rb_files = spec.files.select{|f| f[/^lib/]}
     readme = spec.name == 'renee' ? "README.md" : "README-#{spec.name}.md"
     pid = fork do # yard has some shared state somewhere. poor poor yard.
-      YARD::Rake::YardocTask.new do |t|
-        t.options = ['-o', File.expand_path("../../renee-site/public/docs/#{spec.name}", __FILE__), '--readme', readme, '--no-private', '--markup', 'markdown']
+      YARD::Rake::YardocTask.new(task_name) do |t|
+        t.options = ['-o', File.expand_path("../site/public/docs/#{spec.name}", __FILE__), '--readme', readme, '--no-private', '--markup', 'markdown']
         t.files   = rb_files
       end
-      Rake::Task[:yard].execute
+      Rake::Task[task_name].execute
     end
     _, status = Process.waitpid2(pid)
     raise unless status.success?
   end
 end
-
-#
-#
-#desc "Generate documentation for the renee framework"
-#task :doc do
-#  [:render, :core].each do |name|
-#    
-#    --output-dir doc/
-#    --readme README.md
-#    --no-private
-#    --title Renee Framework
-#    --markup markdown
-#    'renee/lib/**/*.rb'
-#    'renee-*/lib/**/*.rb'
-#  end
-#end
-#
