@@ -18,15 +18,16 @@ module Renee
       # Provides a rack interface compliant call method.
       # @param[Hash] env The rack environment.
       def call(e)
-        init_application
+        initialize_plugins
         idx = 0
         next_app = proc do |env|
           if idx == self.class.middlewares.size
             @env, @request = env, Rack::Request.new(env)
             @detected_extension = env['PATH_INFO'][/\.([^\.\/]+)$/, 1]
             # TODO clear template cache in development? `template_cache.clear`
-            catch(:halt) do
+            out = catch(:halt) do
               begin
+                self.class.before_blocks.each { |b| instance_eval(&b) }
                 instance_eval(&self.class.application_block)
               rescue ClientError => e
                 e.response ? instance_eval(&e.response) : halt("There was an error with your request", 400)
@@ -35,6 +36,8 @@ module Renee
               end
               Renee::Core::Response.new("Not found", 404).finish
             end
+            self.class.after_blocks.each { |a| out = instance_exec(out, &a) }
+            out
           else
             middleware = self.class.middlewares[idx]
             idx += 1
@@ -44,9 +47,9 @@ module Renee
         next_app[e]
       end # call
 
-      def init_application
-        self.class.included_modules.select{|m| m.respond_to?(:init_application)}.each(&:init_application)
-        extend Module.new { define_method(:init_application) { } }
+      def initialize_plugins
+        self.class.init_blocks.each { |init_block| self.class.class_eval(&init_block) }
+        self.class.send(:define_method, :initialize_plugins) { }
       end
     end
   end

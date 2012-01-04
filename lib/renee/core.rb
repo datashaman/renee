@@ -11,6 +11,7 @@ require 'renee/core/transform'
 require 'renee/core/routing'
 require 'renee/core/responding'
 require 'renee/core/env_accessors'
+require 'renee/core/plugins'
 
 # Top-level Renee constant
 module Renee
@@ -34,6 +35,8 @@ module Renee
 
     # Class methods that are included in new instances of {Core} 
     module ClassMethods
+      include Plugins
+
       # The application block used to create your application.
       attr_reader :application_block
 

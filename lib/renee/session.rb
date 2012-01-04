@@ -4,6 +4,8 @@ require 'renee/version'
 module Renee
   module Session
     module ClassMethods
+      attr_reader :store_type
+
       def add_session_type(type, cls)
         session_stores[type] = cls
       end
@@ -27,14 +29,6 @@ module Renee
       def session_stores
         @session_stores ||= {}
       end
-
-      def init_application
-        if @store_type
-          session_constant = Renee::Util.lookup_constant(@store_type[0])
-          use session_constant, *@store_type[1], &@store_type[2]
-          define_method(:session) { env[Rack::Session::Abstract::ENV_SESSION_KEY] }
-        end
-      end
     end
 
     def self.included(o)
@@ -42,6 +36,11 @@ module Renee
       o.add_session_type :cookie, 'Rack::Session::Cookie'
       o.add_session_type :pool, 'Rack::Session::Pool'
       o.add_session_type :memcache, 'Rack::Session::Memcache'
+      o.on_init do
+        session_constant = Renee::Util.lookup_constant(store_type[0])
+        use session_constant, *store_type[1], &store_type[2]
+        define_method(:session) { env[Rack::Session::Abstract::ENV_SESSION_KEY] }
+      end
     end
 
     def session
