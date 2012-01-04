@@ -23,6 +23,7 @@ renee_gems = %w[
   renee-core
   renee-render
   renee-url-generation
+  renee-session
   renee
 ].freeze
 
