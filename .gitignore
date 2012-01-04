@@ -13,4 +13,5 @@ Gemfile.lock
 Gemfile-renee.lock
 Gemfile-renee-core.lock
 Gemfile-renee-render.lock
+Gemfile-renee-session.lock
 Gemfile-renee-url-generation.lock
