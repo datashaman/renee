@@ -16,4 +16,16 @@ describe Renee::Session do
     get '/test'
     assert_equal "why hello", response.body
   end
+
+  it "should persist values across multiple calls" do
+    @app.app do
+      out = session[:test] || "first"
+      session[:test] = 'hello'
+      path('test').get.halt out
+    end
+    get '/test'
+    assert_equal "first", response.body
+    get '/test'
+    assert_equal "hello", response.body
+  end
 end
