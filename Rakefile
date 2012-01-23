@@ -36,7 +36,7 @@ task :build do
 end
 
 task :release => [:build, :yard] do
-  require File.join(ROOT, 'renee', 'lib', 'renee', 'version')
+  require File.join(ROOT, 'lib', 'renee', 'version')
   version_tag = "v#{Renee::VERSION}"
   begin
     raise("#{version_tag} has already been committed") if lsh('git tag').split(/\n/).include?(version_tag)
