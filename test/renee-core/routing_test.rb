@@ -152,6 +152,25 @@ describe Renee::Core::Routing do
       assert_equal '7', response.body
     end
 
+    it "can take an optional variable" do
+      type = { 'Content-Type' => 'text/plain' }
+      mock_app do
+        path 'add' do
+          var(:integer).optional(:integer) do |a, b|
+            b ||= a
+            halt [200, type, ["#{a + b}"]]
+          end
+        end
+      end
+
+      get '/add/3/4'
+      assert_equal 200, response.status
+      assert_equal '7', response.body
+      get '/add/3'
+      assert_equal 200, response.status
+      assert_equal '6', response.body
+    end
+
     it "allows arbitrary ranges of values" do
       type = { 'Content-Type' => 'text/plain' }
       mock_app do

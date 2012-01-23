@@ -93,6 +93,12 @@ module Renee
       alias_method :var, :variable
       chainable :variable, :var
 
+      def optional_variable(type = nil, &blk)
+        blk ? complex_variable(type, '/', 0..1) { |vars| blk[vars.first] } : create_chain_proxy(:variable, type)
+      end
+      alias_method :optional, :optional_variable
+      chainable :optional, :optional_variable
+
       # Same as variable except you can match multiple variables with the same type.
       # @param [Range, Integer] count The number of parameters to capture.
       # @param [Symbol] type The type to use for match.
