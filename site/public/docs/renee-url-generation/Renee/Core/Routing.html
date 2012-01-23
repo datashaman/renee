@@ -320,6 +320,30 @@
         <li class="public ">
   <span class="summary_signature">
     
+      <a href="#optional_variable-instance_method" title="#optional_variable (instance method)">- (Object) <strong>optional_variable</strong>(type = nil, &amp;blk) </a>
+    
+
+    
+      (also: #optional)
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
       <a href="#part-instance_method" title="#part (instance method)">- (Object) <strong>part</strong>(p) </a>
     
 
@@ -552,16 +576,16 @@
       <pre class="lines">
 
 
-206
-207
-208
-209
-210
-211
-212</pre>
+212
+213
+214
+215
+216
+217
+218</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/renee/core/routing.rb', line 206</span>
+      <pre class="code"><span class="info file"># File 'lib/renee/core/routing.rb', line 212</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_complete'>complete</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='id identifier rubyid_blk'>blk</span><span class='rparen'>)</span>
   <span class='kw'>if</span> <span class='id identifier rubyid_blk'>blk</span>
@@ -622,12 +646,12 @@
       <pre class="lines">
 
 
-223
-224
-225</pre>
+229
+230
+231</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/renee/core/routing.rb', line 223</span>
+      <pre class="code"><span class="info file"># File 'lib/renee/core/routing.rb', line 229</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_complete?'>complete?</span>
   <span class='lparen'>(</span><span class='id identifier rubyid_detected_extension'>detected_extension</span> <span class='kw'>and</span> <span class='id identifier rubyid_env'>env</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>PATH_INFO</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span> <span class='op'>=~</span> <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>^\/?(\.</span><span class='embexpr_beg'>#{</span><span class='const'>Regexp</span><span class='period'>.</span><span class='id identifier rubyid_quote'>quote</span><span class='lparen'>(</span><span class='id identifier rubyid_detected_extension'>detected_extension</span><span class='rparen'>)</span><span class='rbrace'>}</span><span class='tstring_content'>\/?)?$</span><span class='regexp_end'>/</span></span><span class='rparen'>)</span> <span class='op'>||</span> <span class='lparen'>(</span><span class='id identifier rubyid_detected_extension'>detected_extension</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span> <span class='kw'>and</span> <span class='id identifier rubyid_env'>env</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>PATH_INFO</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span> <span class='op'>=~</span> <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>^\/?$</span><span class='regexp_end'>/</span></span><span class='rparen'>)</span>
@@ -744,12 +768,12 @@
       <pre class="lines">
 
 
-195
-196
-197</pre>
+201
+202
+203</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/renee/core/routing.rb', line 195</span>
+      <pre class="code"><span class="info file"># File 'lib/renee/core/routing.rb', line 201</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_delete'>delete</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='id identifier rubyid_blk'>blk</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_blk'>blk</span> <span class='op'>?</span> <span class='id identifier rubyid_request_method'>request_method</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>DELETE</span><span class='tstring_end'>'</span></span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_blk'>blk</span><span class='rparen'>)</span> <span class='op'>:</span> <span class='id identifier rubyid_create_chain_proxy'>create_chain_proxy</span><span class='lparen'>(</span><span class='symbol'>:delete</span><span class='rparen'>)</span>
@@ -791,18 +815,18 @@
       <pre class="lines">
 
 
-233
-234
-235
-236
-237
-238
 239
 240
-241</pre>
+241
+242
+243
+244
+245
+246
+247</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/renee/core/routing.rb', line 233</span>
+      <pre class="code"><span class="info file"># File 'lib/renee/core/routing.rb', line 239</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_empty'>empty</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='id identifier rubyid_blk'>blk</span><span class='rparen'>)</span>
   <span class='kw'>if</span> <span class='id identifier rubyid_blk'>blk</span>
@@ -854,12 +878,12 @@
       <pre class="lines">
 
 
-129
-130
-131</pre>
+135
+136
+137</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/renee/core/routing.rb', line 129</span>
+      <pre class="code"><span class="info file"># File 'lib/renee/core/routing.rb', line 135</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_extension'>extension</span>
   <span class='id identifier rubyid_detected_extension'>detected_extension</span>
@@ -901,12 +925,12 @@
       <pre class="lines">
 
 
-162
-163
-164</pre>
+168
+169
+170</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/renee/core/routing.rb', line 162</span>
+      <pre class="code"><span class="info file"># File 'lib/renee/core/routing.rb', line 168</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_get'>get</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='id identifier rubyid_blk'>blk</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_blk'>blk</span> <span class='op'>?</span> <span class='id identifier rubyid_request_method'>request_method</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>GET</span><span class='tstring_end'>'</span></span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_blk'>blk</span><span class='rparen'>)</span> <span class='op'>:</span> <span class='id identifier rubyid_create_chain_proxy'>create_chain_proxy</span><span class='lparen'>(</span><span class='symbol'>:get</span><span class='rparen'>)</span>
@@ -979,12 +1003,12 @@
       <pre class="lines">
 
 
-99
-100
-101</pre>
+105
+106
+107</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/renee/core/routing.rb', line 99</span>
+      <pre class="code"><span class="info file"># File 'lib/renee/core/routing.rb', line 105</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_multi_variable'>multi_variable</span><span class='lparen'>(</span><span class='id identifier rubyid_count'>count</span><span class='comma'>,</span> <span class='id identifier rubyid_type'>type</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_blk'>blk</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_blk'>blk</span> <span class='op'>?</span> <span class='id identifier rubyid_complex_variable'>complex_variable</span><span class='lparen'>(</span><span class='id identifier rubyid_type'>type</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>/</span><span class='tstring_end'>'</span></span><span class='comma'>,</span> <span class='id identifier rubyid_count'>count</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_blk'>blk</span><span class='rparen'>)</span> <span class='op'>:</span> <span class='id identifier rubyid_create_chain_proxy'>create_chain_proxy</span><span class='lparen'>(</span><span class='symbol'>:multi_variable</span><span class='comma'>,</span> <span class='id identifier rubyid_count'>count</span><span class='comma'>,</span> <span class='id identifier rubyid_type'>type</span><span class='rparen'>)</span>
@@ -1026,15 +1050,47 @@
       <pre class="lines">
 
 
-140
-141
-142</pre>
+146
+147
+148</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/renee/core/routing.rb', line 140</span>
+      <pre class="code"><span class="info file"># File 'lib/renee/core/routing.rb', line 146</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_no_extension'>no_extension</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='id identifier rubyid_blk'>blk</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_blk'>blk</span><span class='period'>.</span><span class='id identifier rubyid_call'>call</span> <span class='kw'>unless</span> <span class='id identifier rubyid_detected_extension'>detected_extension</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="optional_variable-instance_method">
+  
+    - (<tt>Object</tt>) <strong>optional_variable</strong>(type = nil, &amp;blk) 
+  
+
+  
+    <span class="aliases">Also known as:
+    <span class="names"><span id='optional-instance_method'>optional</span></span>
+    </span>
+  
+</p><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+96
+97
+98</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/renee/core/routing.rb', line 96</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_optional_variable'>optional_variable</span><span class='lparen'>(</span><span class='id identifier rubyid_type'>type</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_blk'>blk</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_blk'>blk</span> <span class='op'>?</span> <span class='id identifier rubyid_complex_variable'>complex_variable</span><span class='lparen'>(</span><span class='id identifier rubyid_type'>type</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>/</span><span class='tstring_end'>'</span></span><span class='comma'>,</span> <span class='int'>0</span><span class='op'>..</span><span class='int'>1</span><span class='rparen'>)</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_vars'>vars</span><span class='op'>|</span> <span class='id identifier rubyid_blk'>blk</span><span class='lbracket'>[</span><span class='id identifier rubyid_vars'>vars</span><span class='period'>.</span><span class='id identifier rubyid_first'>first</span><span class='rbracket'>]</span> <span class='rbrace'>}</span> <span class='op'>:</span> <span class='id identifier rubyid_create_chain_proxy'>create_chain_proxy</span><span class='lparen'>(</span><span class='symbol'>:variable</span><span class='comma'>,</span> <span class='id identifier rubyid_type'>type</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1127,12 +1183,12 @@
       <pre class="lines">
 
 
-117
-118
-119</pre>
+123
+124
+125</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/renee/core/routing.rb', line 117</span>
+      <pre class="code"><span class="info file"># File 'lib/renee/core/routing.rb', line 123</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_partial_variable'>partial_variable</span><span class='lparen'>(</span><span class='id identifier rubyid_type'>type</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_blk'>blk</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_blk'>blk</span> <span class='op'>?</span> <span class='id identifier rubyid_complex_variable'>complex_variable</span><span class='lparen'>(</span><span class='id identifier rubyid_type'>type</span><span class='comma'>,</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='int'>1</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_blk'>blk</span><span class='rparen'>)</span> <span class='op'>:</span> <span class='id identifier rubyid_create_chain_proxy'>create_chain_proxy</span><span class='lparen'>(</span><span class='symbol'>:partial_variable</span><span class='comma'>,</span> <span class='id identifier rubyid_type'>type</span><span class='rparen'>)</span>
@@ -1272,12 +1328,12 @@ end</pre>
       <pre class="lines">
 
 
-173
-174
-175</pre>
+179
+180
+181</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/renee/core/routing.rb', line 173</span>
+      <pre class="code"><span class="info file"># File 'lib/renee/core/routing.rb', line 179</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_post'>post</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='id identifier rubyid_blk'>blk</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_blk'>blk</span> <span class='op'>?</span> <span class='id identifier rubyid_request_method'>request_method</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>POST</span><span class='tstring_end'>'</span></span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_blk'>blk</span><span class='rparen'>)</span> <span class='op'>:</span> <span class='id identifier rubyid_create_chain_proxy'>create_chain_proxy</span><span class='lparen'>(</span><span class='symbol'>:post</span><span class='rparen'>)</span>
@@ -1319,12 +1375,12 @@ end</pre>
       <pre class="lines">
 
 
-184
-185
-186</pre>
+190
+191
+192</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/renee/core/routing.rb', line 184</span>
+      <pre class="code"><span class="info file"># File 'lib/renee/core/routing.rb', line 190</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_put'>put</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='id identifier rubyid_blk'>blk</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_blk'>blk</span> <span class='op'>?</span> <span class='id identifier rubyid_request_method'>request_method</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>PUT</span><span class='tstring_end'>'</span></span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_blk'>blk</span><span class='rparen'>)</span> <span class='op'>:</span> <span class='id identifier rubyid_create_chain_proxy'>create_chain_proxy</span><span class='lparen'>(</span><span class='symbol'>:put</span><span class='rparen'>)</span>
@@ -1370,12 +1426,12 @@ end</pre>
       <pre class="lines">
 
 
-150
-151
-152</pre>
+156
+157
+158</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/renee/core/routing.rb', line 150</span>
+      <pre class="code"><span class="info file"># File 'lib/renee/core/routing.rb', line 156</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_remainder'>remainder</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='id identifier rubyid_blk'>blk</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_blk'>blk</span> <span class='op'>?</span> <span class='id identifier rubyid_with_path_part'>with_path_part</span><span class='lparen'>(</span><span class='id identifier rubyid_env'>env</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>PATH_INFO</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span><span class='rparen'>)</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_var'>var</span><span class='op'>|</span> <span class='id identifier rubyid_blk'>blk</span><span class='period'>.</span><span class='id identifier rubyid_call'>call</span><span class='lparen'>(</span><span class='id identifier rubyid_var'>var</span><span class='rparen'>)</span> <span class='rbrace'>}</span> <span class='op'>:</span> <span class='id identifier rubyid_create_chain_proxy'>create_chain_proxy</span><span class='lparen'>(</span><span class='symbol'>:remainder</span><span class='rparen'>)</span>
@@ -1433,12 +1489,12 @@ end</pre>
       <pre class="lines">
 
 
-108
-109
-110</pre>
+114
+115
+116</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/renee/core/routing.rb', line 108</span>
+      <pre class="code"><span class="info file"># File 'lib/renee/core/routing.rb', line 114</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_repeating_variable'>repeating_variable</span><span class='lparen'>(</span><span class='id identifier rubyid_type'>type</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_blk'>blk</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_blk'>blk</span> <span class='op'>?</span> <span class='id identifier rubyid_complex_variable'>complex_variable</span><span class='lparen'>(</span><span class='id identifier rubyid_type'>type</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>/</span><span class='tstring_end'>'</span></span><span class='comma'>,</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_blk'>blk</span><span class='rparen'>)</span> <span class='op'>:</span> <span class='id identifier rubyid_create_chain_proxy'>create_chain_proxy</span><span class='lparen'>(</span><span class='symbol'>:repeating_variable</span><span class='comma'>,</span> <span class='id identifier rubyid_type'>type</span><span class='rparen'>)</span>
@@ -1524,7 +1580,7 @@ simply a String.
 </div>
     
     <div id="footer">
-  Generated on Mon Jan  2 12:54:53 2012 by 
+  Generated on Mon Jan 23 11:10:33 2012 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.7.4 (ruby-1.9.2).
 </div>

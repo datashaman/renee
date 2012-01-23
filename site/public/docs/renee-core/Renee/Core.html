@@ -96,7 +96,7 @@
   
     <dt class="r2 last">Defined in:</dt>
     <dd class="r2 last">lib/renee/core.rb<span class="defines">,<br />
-  lib/renee/core/routing.rb,<br /> lib/renee/core/matcher.rb,<br /> lib/renee/core/response.rb,<br /> lib/renee/core/chaining.rb,<br /> lib/renee/core/transform.rb,<br /> lib/renee/core/exceptions.rb,<br /> lib/renee/core/responding.rb,<br /> lib/renee/core/env_accessors.rb,<br /> lib/renee/core/request_context.rb,<br /> lib/renee/core/rack_interaction.rb</span>
+  lib/renee/core/matcher.rb,<br /> lib/renee/core/routing.rb,<br /> lib/renee/core/plugins.rb,<br /> lib/renee/core/chaining.rb,<br /> lib/renee/core/response.rb,<br /> lib/renee/core/transform.rb,<br /> lib/renee/core/exceptions.rb,<br /> lib/renee/core/responding.rb,<br /> lib/renee/core/env_accessors.rb,<br /> lib/renee/core/request_context.rb,<br /> lib/renee/core/rack_interaction.rb</span>
 </dd>
   
 </dl>
@@ -118,7 +118,7 @@ for decalaring new instances.</p>
 <p class="children">
    
     
-      <strong class="modules">Modules:</strong> <span class='object_link'><a href="Core/Chaining.html" title="Renee::Core::Chaining (module)">Chaining</a></span>, <span class='object_link'><a href="Core/ClassMethods.html" title="Renee::Core::ClassMethods (module)">ClassMethods</a></span>, <span class='object_link'><a href="Core/EnvAccessors.html" title="Renee::Core::EnvAccessors (module)">EnvAccessors</a></span>, <span class='object_link'><a href="Core/RackInteraction.html" title="Renee::Core::RackInteraction (module)">RackInteraction</a></span>, <span class='object_link'><a href="Core/RequestContext.html" title="Renee::Core::RequestContext (module)">RequestContext</a></span>, <span class='object_link'><a href="Core/Responding.html" title="Renee::Core::Responding (module)">Responding</a></span>, <span class='object_link'><a href="Core/Routing.html" title="Renee::Core::Routing (module)">Routing</a></span>, <span class='object_link'><a href="Core/Transform.html" title="Renee::Core::Transform (module)">Transform</a></span>
+      <strong class="modules">Modules:</strong> <span class='object_link'><a href="Core/Chaining.html" title="Renee::Core::Chaining (module)">Chaining</a></span>, <span class='object_link'><a href="Core/ClassMethods.html" title="Renee::Core::ClassMethods (module)">ClassMethods</a></span>, <span class='object_link'><a href="Core/EnvAccessors.html" title="Renee::Core::EnvAccessors (module)">EnvAccessors</a></span>, <span class='object_link'><a href="Core/Plugins.html" title="Renee::Core::Plugins (module)">Plugins</a></span>, <span class='object_link'><a href="Core/RackInteraction.html" title="Renee::Core::RackInteraction (module)">RackInteraction</a></span>, <span class='object_link'><a href="Core/RequestContext.html" title="Renee::Core::RequestContext (module)">RequestContext</a></span>, <span class='object_link'><a href="Core/Responding.html" title="Renee::Core::Responding (module)">Responding</a></span>, <span class='object_link'><a href="Core/Routing.html" title="Renee::Core::Routing (module)">Routing</a></span>, <span class='object_link'><a href="Core/Transform.html" title="Renee::Core::Transform (module)">Transform</a></span>
     
    
     
@@ -188,6 +188,10 @@ for decalaring new instances.</p>
   
   
   
+  
+  
+  
+  
   <h3 class="inherited">Constants included from <span class='object_link'><a href="Core/EnvAccessors.html" title="Renee::Core::EnvAccessors (module)">EnvAccessors</a></span></h3>
   <p class="inherited"><span class='object_link'><a href="Core/EnvAccessors.html#InvalidEnvNameError-constant" title="Renee::Core::EnvAccessors::InvalidEnvNameError (constant)">InvalidEnvNameError</a></span></p>
 
@@ -227,6 +231,14 @@ for decalaring new instances.</p>
   
   <h3 class="inherited">Attributes included from <span class='object_link'><a href="Core/ClassMethods.html" title="Renee::Core::ClassMethods (module)">ClassMethods</a></span></h3>
   <p class="inherited"><span class='object_link'><a href="Core/ClassMethods.html#application_block-instance_method" title="Renee::Core::ClassMethods#application_block (method)">application_block</a></span></p>
+
+  
+  
+  
+  
+  
+  <h3 class="inherited">Attributes included from <span class='object_link'><a href="Core/Plugins.html" title="Renee::Core::Plugins (module)">Plugins</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="Core/Plugins.html#after_blocks-instance_method" title="Renee::Core::Plugins#after_blocks (method)">after_blocks</a></span>, <span class='object_link'><a href="Core/Plugins.html#before_blocks-instance_method" title="Renee::Core::Plugins#before_blocks (method)">before_blocks</a></span>, <span class='object_link'><a href="Core/Plugins.html#init_blocks-instance_method" title="Renee::Core::Plugins#init_blocks (method)">init_blocks</a></span></p>
 
   
   
@@ -273,6 +285,16 @@ for decalaring new instances.</p>
   
   
   
+  <h3 class="inherited">Methods included from <span class='object_link'><a href="Core/Plugins.html" title="Renee::Core::Plugins (module)">Plugins</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="Core/Plugins.html#on_after-instance_method" title="Renee::Core::Plugins#on_after (method)">#on_after</a></span>, <span class='object_link'><a href="Core/Plugins.html#on_before-instance_method" title="Renee::Core::Plugins#on_before (method)">#on_before</a></span>, <span class='object_link'><a href="Core/Plugins.html#on_init-instance_method" title="Renee::Core::Plugins#on_init (method)">#on_init</a></span></p>
+
+  
+  
+  
+  
+  
+  
+  
   
   
   
@@ -309,7 +331,7 @@ for decalaring new instances.</p>
   
   
   <h3 class="inherited">Methods included from <span class='object_link'><a href="Core/Routing.html" title="Renee::Core::Routing (module)">Routing</a></span></h3>
-  <p class="inherited"><span class='object_link'><a href="Core/Routing.html#complete-instance_method" title="Renee::Core::Routing#complete (method)">#complete</a></span>, <span class='object_link'><a href="Core/Routing.html#complete%3F-instance_method" title="Renee::Core::Routing#complete? (method)">#complete?</a></span>, <span class='object_link'><a href="Core/Routing.html#continue_routing-instance_method" title="Renee::Core::Routing#continue_routing (method)">#continue_routing</a></span>, <span class='object_link'><a href="Core/Routing.html#delete-instance_method" title="Renee::Core::Routing#delete (method)">#delete</a></span>, <span class='object_link'><a href="Core/Routing.html#empty-instance_method" title="Renee::Core::Routing#empty (method)">#empty</a></span>, <span class='object_link'><a href="Core/Routing.html#extension-instance_method" title="Renee::Core::Routing#extension (method)">#extension</a></span>, <span class='object_link'><a href="Core/Routing.html#get-instance_method" title="Renee::Core::Routing#get (method)">#get</a></span>, <span class='object_link'><a href="Core/Routing.html#multi_variable-instance_method" title="Renee::Core::Routing#multi_variable (method)">#multi_variable</a></span>, <span class='object_link'><a href="Core/Routing.html#no_extension-instance_method" title="Renee::Core::Routing#no_extension (method)">#no_extension</a></span>, <span class='object_link'><a href="Core/Routing.html#part-instance_method" title="Renee::Core::Routing#part (method)">#part</a></span>, <span class='object_link'><a href="Core/Routing.html#partial_variable-instance_method" title="Renee::Core::Routing#partial_variable (method)">#partial_variable</a></span>, <span class='object_link'><a href="Core/Routing.html#path-instance_method" title="Renee::Core::Routing#path (method)">#path</a></span>, <span class='object_link'><a href="Core/Routing.html#post-instance_method" title="Renee::Core::Routing#post (method)">#post</a></span>, <span class='object_link'><a href="Core/Routing.html#put-instance_method" title="Renee::Core::Routing#put (method)">#put</a></span>, <span class='object_link'><a href="Core/Routing.html#remainder-instance_method" title="Renee::Core::Routing#remainder (method)">#remainder</a></span>, <span class='object_link'><a href="Core/Routing.html#repeating_variable-instance_method" title="Renee::Core::Routing#repeating_variable (method)">#repeating_variable</a></span>, <span class='object_link'><a href="Core/Routing.html#variable-instance_method" title="Renee::Core::Routing#variable (method)">#variable</a></span></p>
+  <p class="inherited"><span class='object_link'><a href="Core/Routing.html#complete-instance_method" title="Renee::Core::Routing#complete (method)">#complete</a></span>, <span class='object_link'><a href="Core/Routing.html#complete%3F-instance_method" title="Renee::Core::Routing#complete? (method)">#complete?</a></span>, <span class='object_link'><a href="Core/Routing.html#continue_routing-instance_method" title="Renee::Core::Routing#continue_routing (method)">#continue_routing</a></span>, <span class='object_link'><a href="Core/Routing.html#delete-instance_method" title="Renee::Core::Routing#delete (method)">#delete</a></span>, <span class='object_link'><a href="Core/Routing.html#empty-instance_method" title="Renee::Core::Routing#empty (method)">#empty</a></span>, <span class='object_link'><a href="Core/Routing.html#extension-instance_method" title="Renee::Core::Routing#extension (method)">#extension</a></span>, <span class='object_link'><a href="Core/Routing.html#get-instance_method" title="Renee::Core::Routing#get (method)">#get</a></span>, <span class='object_link'><a href="Core/Routing.html#multi_variable-instance_method" title="Renee::Core::Routing#multi_variable (method)">#multi_variable</a></span>, <span class='object_link'><a href="Core/Routing.html#no_extension-instance_method" title="Renee::Core::Routing#no_extension (method)">#no_extension</a></span>, <span class='object_link'><a href="Core/Routing.html#optional_variable-instance_method" title="Renee::Core::Routing#optional_variable (method)">#optional_variable</a></span>, <span class='object_link'><a href="Core/Routing.html#part-instance_method" title="Renee::Core::Routing#part (method)">#part</a></span>, <span class='object_link'><a href="Core/Routing.html#partial_variable-instance_method" title="Renee::Core::Routing#partial_variable (method)">#partial_variable</a></span>, <span class='object_link'><a href="Core/Routing.html#path-instance_method" title="Renee::Core::Routing#path (method)">#path</a></span>, <span class='object_link'><a href="Core/Routing.html#post-instance_method" title="Renee::Core::Routing#post (method)">#post</a></span>, <span class='object_link'><a href="Core/Routing.html#put-instance_method" title="Renee::Core::Routing#put (method)">#put</a></span>, <span class='object_link'><a href="Core/Routing.html#remainder-instance_method" title="Renee::Core::Routing#remainder (method)">#remainder</a></span>, <span class='object_link'><a href="Core/Routing.html#repeating_variable-instance_method" title="Renee::Core::Routing#repeating_variable (method)">#repeating_variable</a></span>, <span class='object_link'><a href="Core/Routing.html#variable-instance_method" title="Renee::Core::Routing#variable (method)">#variable</a></span></p>
 
   
   
@@ -329,13 +351,13 @@ for decalaring new instances.</p>
   
   
   <h3 class="inherited">Methods included from <span class='object_link'><a href="Core/RequestContext.html" title="Renee::Core::RequestContext (module)">RequestContext</a></span></h3>
-  <p class="inherited"><span class='object_link'><a href="Core/RequestContext.html#call-instance_method" title="Renee::Core::RequestContext#call (method)">#call</a></span>, <span class='object_link'><a href="Core/RequestContext.html#init_application-instance_method" title="Renee::Core::RequestContext#init_application (method)">#init_application</a></span></p>
+  <p class="inherited"><span class='object_link'><a href="Core/RequestContext.html#call-instance_method" title="Renee::Core::RequestContext#call (method)">#call</a></span>, <span class='object_link'><a href="Core/RequestContext.html#initialize_plugins-instance_method" title="Renee::Core::RequestContext#initialize_plugins (method)">#initialize_plugins</a></span></p>
 
 
 </div>
     
     <div id="footer">
-  Generated on Mon Jan  2 12:54:50 2012 by 
+  Generated on Mon Jan 23 11:10:30 2012 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.7.4 (ruby-1.9.2).
 </div>

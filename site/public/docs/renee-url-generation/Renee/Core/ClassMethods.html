@@ -68,15 +68,19 @@
     
   
     
-  
-  
-    <dt class="r1">Included in:</dt>
-    <dd class="r1"><span class='object_link'><a href="../Core.html" title="Renee::Core (class)">Renee::Core</a></span></dd>
+      <dt class="r1">Includes:</dt>
+      <dd class="r1"><span class='object_link'><a href="Plugins.html" title="Renee::Core::Plugins (module)">Plugins</a></span></dd>
+      
     
   
   
-    <dt class="r2 last">Defined in:</dt>
-    <dd class="r2 last">lib/renee/core.rb<span class="defines">,<br />
+    <dt class="r2">Included in:</dt>
+    <dd class="r2"><span class='object_link'><a href="../Core.html" title="Renee::Core (class)">Renee::Core</a></span></dd>
+    
+  
+  
+    <dt class="r1 last">Defined in:</dt>
+    <dd class="r1 last">lib/renee/core.rb<span class="defines">,<br />
   lib/renee/core/request_context.rb</span>
 </dd>
   
@@ -95,6 +99,10 @@
 
 </div>
 
+  
+  
+  
+  
   <h2>Instance Attribute Summary <small>(<a href="#" class="summary_toggle">collapse</a>)</small></h2>
   <ul class="summary">
     
@@ -126,6 +134,14 @@
   </ul>
 
 
+
+  
+  
+  
+  
+  
+  <h3 class="inherited">Attributes included from <span class='object_link'><a href="Plugins.html" title="Renee::Core::Plugins (module)">Plugins</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="Plugins.html#after_blocks-instance_method" title="Renee::Core::Plugins#after_blocks (method)">after_blocks</a></span>, <span class='object_link'><a href="Plugins.html#before_blocks-instance_method" title="Renee::Core::Plugins#before_blocks (method)">before_blocks</a></span>, <span class='object_link'><a href="Plugins.html#init_blocks-instance_method" title="Renee::Core::Plugins#init_blocks (method)">init_blocks</a></span></p>
 
 
   
@@ -294,6 +310,16 @@
   
 
 
+  
+  
+  
+  
+  
+  
+  
+  <h3 class="inherited">Methods included from <span class='object_link'><a href="Plugins.html" title="Renee::Core::Plugins (module)">Plugins</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="Plugins.html#on_after-instance_method" title="Renee::Core::Plugins#on_after (method)">#on_after</a></span>, <span class='object_link'><a href="Plugins.html#on_before-instance_method" title="Renee::Core::Plugins#on_before (method)">#on_before</a></span>, <span class='object_link'><a href="Plugins.html#on_init-instance_method" title="Renee::Core::Plugins#on_init (method)">#on_init</a></span></p>
+
   <div id="instance_attr_details" class="attr_details">
     <h2>Instance Attribute Details</h2>
     
@@ -323,12 +349,12 @@
       <pre class="lines">
 
 
-38
-39
-40</pre>
+41
+42
+43</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/renee/core.rb', line 38</span>
+      <pre class="code"><span class="info file"># File 'lib/renee/core.rb', line 41</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_application_block'>application_block</span>
   <span class='ivar'>@application_block</span>
@@ -385,16 +411,16 @@
       <pre class="lines">
 
 
-48
-49
-50
 51
 52
 53
-54</pre>
+54
+55
+56
+57</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/renee/core.rb', line 48</span>
+      <pre class="code"><span class="info file"># File 'lib/renee/core.rb', line 51</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_app'>app</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='id identifier rubyid_app'>app</span><span class='rparen'>)</span>
   <span class='ivar'>@application_block</span> <span class='op'>=</span> <span class='id identifier rubyid_app'>app</span>
@@ -433,12 +459,12 @@
       <pre class="lines">
 
 
-42
-43
-44</pre>
+45
+46
+47</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/renee/core.rb', line 42</span>
+      <pre class="code"><span class="info file"># File 'lib/renee/core.rb', line 45</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_call'>call</span><span class='lparen'>(</span><span class='id identifier rubyid_env'>env</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_new'>new</span><span class='period'>.</span><span class='id identifier rubyid_call'>call</span><span class='lparen'>(</span><span class='id identifier rubyid_env'>env</span><span class='rparen'>)</span>
@@ -550,19 +576,19 @@
       <pre class="lines">
 
 
-71
-72
-73
 74
 75
 76
 77
 78
 79
-80</pre>
+80
+81
+82
+83</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/renee/core.rb', line 71</span>
+      <pre class="code"><span class="info file"># File 'lib/renee/core.rb', line 74</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_register_variable_type'>register_variable_type</span><span class='lparen'>(</span><span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='id identifier rubyid_matcher'>matcher</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_matcher'>matcher</span> <span class='op'>=</span> <span class='kw'>case</span> <span class='id identifier rubyid_matcher'>matcher</span>
@@ -602,13 +628,13 @@
       <pre class="lines">
 
 
-57
-58
-59
-60</pre>
+60
+61
+62
+63</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/renee/core.rb', line 57</span>
+      <pre class="code"><span class="info file"># File 'lib/renee/core.rb', line 60</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_setup'>setup</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='id identifier rubyid_blk'>blk</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_instance_eval'>instance_eval</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='id identifier rubyid_blk'>blk</span><span class='rparen'>)</span>
@@ -670,12 +696,12 @@
       <pre class="lines">
 
 
-63
-64
-65</pre>
+66
+67
+68</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/renee/core.rb', line 63</span>
+      <pre class="code"><span class="info file"># File 'lib/renee/core.rb', line 66</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_variable_types'>variable_types</span>
   <span class='ivar'>@variable_types</span> <span class='op'>||=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
@@ -690,7 +716,7 @@
 </div>
     
     <div id="footer">
-  Generated on Mon Jan  2 12:54:53 2012 by 
+  Generated on Mon Jan 23 11:10:32 2012 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.7.4 (ruby-1.9.2).
 </div>
