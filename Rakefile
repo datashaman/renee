@@ -57,7 +57,7 @@ end
 
 task :install => :build do
   require File.join(ROOT, 'lib', 'renee', 'version')
-  renee_ge/ms.each do |g|
+  renee_gems.each do |g|
     lsh "gem install pkg/#{g}-#{Renee::VERSION}.gem"
     puts "#{g} installed"
   end
