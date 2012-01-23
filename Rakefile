@@ -35,7 +35,7 @@ task :build do
   end
 end
 
-task :release => [:build, :doc] do
+task :release => [:build, :yard] do
   require File.join(ROOT, 'renee', 'lib', 'renee', 'version')
   version_tag = "v#{Renee::VERSION}"
   begin
