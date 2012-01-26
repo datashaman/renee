@@ -87,8 +87,8 @@ module Renee
       #   GET /test/hey/there  #=> [200, {}, 'hey-there']
       #
       # @api public
-      def variable(type = nil, &blk)
-        blk ? complex_variable(type, '/', 1, &blk) : create_chain_proxy(:variable, type)
+      def variable(*types, &blk)
+        blk ? complex_variable(types, '/', types.empty? ? 1 : types.size , &blk) : create_chain_proxy(:variable, *types)
       end
       alias_method :var, :variable
       chainable :variable, :var
@@ -249,11 +249,10 @@ module Renee
 
       private
       def complex_variable(type, prefix, count)
-        matcher = variable_matcher_for_type(type)
         path = env['PATH_INFO'].dup
         vals = []
-        var_index = 0
-        variable_matching_loop(count) do
+        variable_matching_loop(count) do |idx|
+          matcher = variable_matcher_for_type(type.respond_to?(:at) ? type.at(idx) : type)
           path.start_with?(prefix) ? path.slice!(0, prefix.size) : break if prefix
           if match = matcher[path]
             path.slice!(0, match.first.size)
@@ -272,9 +271,9 @@ module Renee
 
       def variable_matching_loop(count)
         case count
-        when Range then count.max.times { break unless yield }
-        when nil   then loop { break unless yield }
-        else            count.times { break unless yield }
+        when Range then count.max.times { |i| break unless yield i }
+        when nil   then i = 0; loop { break unless yield i; i+= 1 }
+        else            count.times { |i| break unless yield i }
         end
       end
 
