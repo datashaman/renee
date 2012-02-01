@@ -17,12 +17,31 @@ extension. First, define the module:
 
         def self.included(o)
           o.extend(ClassMethods)
-          o.on_init do
-            define_method(:foo) { 'bar' }
-            # More things on initialize
-          end
+          # ...more here...
         end
 
+      end
+    end
+
+You can use hooks inside the `included` method to apply code at certain points in the renee lifecycle (init, before, after):
+
+     :::ruby
+     module Renee
+       module SampleExtension
+         def self.included(o)
+           o.on_init do
+             define_method(:foo) { 'bar' }
+             # More things on initialize
+           end
+
+           o.on_before do
+             # ...before every request...
+           end
+
+           o.on_after do
+             # ...after every request...
+           end
+        end
       end
     end
 
@@ -44,6 +63,4 @@ You can now use your subclassed application with your libraries mixed in:
       end
     }
 
-
-and that's the basics for extending Renee. Checkout the renee source code and
-specifically `renee-sessions` for a more detailed example.
+and that's the basics for extending Renee. Checkout the renee source code and specifically `renee-sessions` for a more detailed example.
