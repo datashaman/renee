@@ -193,6 +193,16 @@ Check out detailed guides for each aspect below:
 
 [&#8618; Read about Route generation](/route-generation)
 
+
+## Extending Renee
+
+Renee is a very modular library comprised of four standalone libraries:
+`renee-core`, `renee-render`, `renee-url-generation`, and `renee-session`.
+
+If you need additional functionality, extending Renee can be very easy and quick.
+Renee extensions are basically just included modules. Check out the [Extending Renee](/extending)
+guide for more information.
+
 ## API documentation
 
 Renee is also well-documented with YARD:
