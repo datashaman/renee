@@ -1,73 +1,93 @@
 body {
-  margin-left: 20%;
-  margin-right: 20%;
-  background-image: url('/img/stoneposter.png');
-  font-family: Arial, Verdana;
+  font-family: "Helvetica Neue", "Helvetica", Arial, sans-serif;
+  font-weight: 500;
+  background-color: #F0F0E6;
 }
 
 body .container {
-  min-width: 500px;
-  background: #FCEA97;
-  border-style: solid;
-  border-width: 5px;
-  border-color: #FFC003;
+  width: 800px;
+  font-size: 90%;
+  margin: 2em auto;
+  background: white;
+  border: 2px solid #D8D8CF;
+  -webkit-border-radius: 15px;
+  -moz-border-radius: 15px;
   border-radius: 15px;
-  padding: 2em;
-  margin-top: 1.2em;
+  padding: 2em 5em;
 }
 
 h1 {
-  color: #1C1C19;
+  color: #222222;
+  font-size: 1.6em;
+  padding-bottom: 0.4em;
+  border-bottom: 1px solid #9B9B9B;
 }
 
 h2 {
-  color: #FFA000;
+  color: #222222;
+  font-size: 1.5em;
 }
 
 a {
   text-decoration: none;
-  color: #A60202;
+  color: #640000;
 }
 
+a:hover {
+  text-decoration: underline;
+}
+
+ul li {
+  list-style-type: square;
+}
+
+
 pre.CodeRay {
-  border: 1px black solid;
-  background-color: #1C1C19;
-  color: white;
-  padding: 5px;
+  overflow: auto;
+  font-family: 'Bitstream Vera Sans Mono','Courier',monospace;
+  border: 1px solid #CCC;
+  background-color: #F8F8F8;
+  color: black;
+  padding: 7px;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
+  border-radius: 4px;
 }
 
 pre.CodeRay .string {
-  color: #FFC003;
+  color: #D14;
 }
 
 pre.CodeRay .constant {
-  color: #A60202;
+  color: rgb(0, 128, 128);
+}
+
+pre.CodeRay .predefined-constant {
+  color: rgb(0, 128, 128);
 }
 
 pre.CodeRay .instance-variable {
-  color: #FCEA97;
+  color: #FF9A52;
 }
 
 pre.CodeRay .keyword {
-  color: #dd7;
+  font-weight: bold;
 }
 
 pre.CodeRay .symbol {
-  color: #f77;
+  color: #990073;
 }
 
 pre.CodeRay .integer {
-  color: #f77;
+  color: #FF9A52;
 }
 
 pre.CodeRay .comment {
-  color: #BC9358;
+  color: #998;
 }
 
 pre.CodeRay .regexp {
-  color: #a33;
+  color: #FF9A52;
 }
 
 div.logo {
