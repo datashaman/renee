@@ -25,22 +25,22 @@ extension. First, define the module:
 
 You can use hooks inside the `included` method to apply code at certain points in the renee lifecycle (init, before, after):
 
-     :::ruby
-     module Renee
-       module SampleExtension
-         def self.included(o)
-           o.on_init do
-             define_method(:foo) { 'bar' }
-             # More things on initialize
-           end
+    :::ruby
+    module Renee
+      module SampleExtension
+        def self.included(o)
+          o.on_init do
+            define_method(:foo) { 'bar' }
+            # More things on initialize
+          end
 
-           o.on_before do
-             # ...before every request...
-           end
+          o.on_before do
+            # ...before every request...
+          end
 
-           o.on_after do
-             # ...after every request...
-           end
+          o.on_after do
+            # ...after every request...
+          end
         end
       end
     end
