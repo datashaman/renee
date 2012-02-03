@@ -3,6 +3,8 @@ source :rubygems
 gemspec :name => 'renee'
 gemspec :name => 'renee-core'
 gemspec :name => 'renee-render'
+gemspec :name => 'renee-session'
+gemspec :name => 'renee-url-generation'
 
 gem 'rdiscount'
 gem 'haml'
