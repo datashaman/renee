@@ -1,10 +1,10 @@
 source :rubygems
 
-gemspec :name => 'renee'
-gemspec :name => 'renee-core'
-gemspec :name => 'renee-render'
-gemspec :name => 'renee-session'
-gemspec :name => 'renee-url-generation'
+gem 'renee', :path => '.'
+gem 'renee-core', :path => '.'
+gem 'renee-render', :path => '.'
+gem 'renee-session', :path => '.'
+gem 'renee-url-generation', :path => '.'
 
 gem 'rdiscount'
 gem 'haml'
