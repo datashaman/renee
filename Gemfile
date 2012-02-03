@@ -17,5 +17,6 @@ group :development do
   gem 'rack-test', '>= 0.5.0'
   gem 'shotgun'
   gem 'rake'
+  gem 'json'
   gem 'yard', '~> 0.7.4'
 end
