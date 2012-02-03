@@ -30,6 +30,8 @@ GEM
       nokogiri (>= 1.4.1)
       rack (>= 1.0.0)
     rack-google-analytics (0.10.0)
+    rack-test (0.6.1)
+      rack (>= 1.0)
     rake (0.9.2.2)
     rdiscount (1.6.8)
     shotgun (0.9)
@@ -46,6 +48,7 @@ DEPENDENCIES
   minitest (~> 2.11.1)
   rack-codehighlighter
   rack-google-analytics
+  rack-test (>= 0.5.0)
   rake
   rdiscount
   renee!
