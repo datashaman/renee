@@ -13,6 +13,7 @@ gem 'rack-google-analytics'
 gem 'coderay'
 
 group :development do
+  gem 'minitest', '~> 2.11.1'
   gem 'shotgun'
   gem 'rake'
   gem 'yard', '~> 0.7.4'

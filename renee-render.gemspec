@@ -22,7 +22,7 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'callsite', '~> 0.0.6'
   s.add_runtime_dependency 'renee-core', "#{Renee::VERSION}"
 
-  s.add_development_dependency 'minitest', "~> 2.6.1"
+  s.add_development_dependency 'minitest', "~> 2.11.1"
   s.add_development_dependency 'rake'
   s.add_development_dependency 'bundler'
   s.add_development_dependency "rack-test", ">= 0.5.0"
