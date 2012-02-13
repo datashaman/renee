@@ -11,7 +11,6 @@ module Renee
         :created => 201,
         :accepted => 202,
         :no_content => 204,
-        :no_content => 204,
         :bad_request => 400,
         :unauthorized => 401,
         :payment_required => 403,
