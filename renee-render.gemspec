@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
   s.test_files    = `git ls-files -- test/renee-render/*`.split("\n") + ["test/test_helper.rb"]
   s.require_paths = ["lib"]
 
-  s.add_runtime_dependency 'rack', "~> 1.3.0"
+  s.add_runtime_dependency 'rack', "~> 1.4.0"
   s.add_runtime_dependency 'tilt', "~> 1.3.3"
   s.add_runtime_dependency 'callsite', '~> 0.0.6'
   s.add_runtime_dependency 'renee-core', "#{Renee::VERSION}"

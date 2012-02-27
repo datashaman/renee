@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
   s.test_files    = `git ls-files -- test/renee-session/*`.split("\n") + ["test/test_helper.rb"]
   s.require_paths = ["lib"]
 
-  s.add_runtime_dependency 'rack', "~> 1.3.0"
+  s.add_runtime_dependency 'rack', "~> 1.4.0"
   s.add_runtime_dependency 'renee-core', "#{Renee::VERSION}"
 
   s.add_development_dependency 'minitest', "~> 2.11.1"
