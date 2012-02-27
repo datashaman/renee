@@ -43,7 +43,7 @@ describe Renee::Core::Responding do
         path('/') { halt :payment_required, "hello!" }
       end
       get '/'
-      assert_equal 403,      response.status
+      assert_equal 402,      response.status
       assert_equal 'hello!', response.body
     end
 
