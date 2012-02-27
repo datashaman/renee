@@ -1,5 +1,7 @@
 # Renee
 
+[![Build Status](https://secure.travis-ci.org/renee-project/renee.png)](http://travis-ci.org/renee-project/renee)
+
 The super friendly rack-based web framework.
 
 ## Introduction
