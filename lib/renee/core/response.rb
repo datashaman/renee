@@ -11,8 +11,7 @@ module Renee
       #
       # @api semipublic
       def body=(value)
-        value = value.body while Rack::Response === value
-        @body = String === value ? [value.to_str] : value
+        @body = value.ia_a?(String) ? [value.to_str] : value
       end
 
       # Alias status and body methods to allow redefinition
@@ -63,11 +62,14 @@ module Renee
       # Finishs the response based on the accumulated options.
       # Calculates the size of the body content length and removes headers for 1xx status codes.
       def finish
-        if status.to_i / 100 == 1
+        case status
+        when 100..199
           headers.delete "Content-Length"
           headers.delete "Content-Type"
-        elsif Array === body and not [204, 304].include?(status.to_i)
-          headers["Content-Length"] = body.inject(0) { |l, p| l + Rack::Utils.bytesize(p) }.to_s
+        when 204, 304
+          # no need for body length calc
+        else
+          headers["Content-Length"] = body.inject(0) { |l, p| l + Rack::Utils.bytesize(p) }.to_s if body.is_a?(Array)
         end
 
         status, headers, result = super

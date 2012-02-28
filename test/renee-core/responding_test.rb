@@ -84,13 +84,22 @@ describe Renee::Core::Responding do
     it "should allow respond" do
       mock_app do
         get do
-          halt(respond { status 403; headers :foo => "bar"; body "hello!" })
+          halt(respond { |r| status 403; headers :foo => "bar"; body "hello!" })
         end
       end
       get "/"
       assert_equal 403,   response.status
       assert_equal "bar",   response.headers["foo"]
       assert_equal "hello!", response.body
+    end # respond
+
+    it "should raise a NoResponseSetError if you respond without any values" do
+      mock_app do
+        get do
+          respond!
+        end
+      end
+      assert_raises(Renee::Core::NoResponseSetError) { get('/') }
     end # respond
   end
 

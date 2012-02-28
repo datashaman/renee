@@ -33,6 +33,9 @@ module Renee
     # Error raised if routing fails. Use #continue_routing to continue routing.
     NotMatchedError = Class.new(RuntimeError)
 
+    # Error raised if respond! or respond is used and no body is set.
+    NoResponseSetError = Class.new(RuntimeError)
+
     # Class methods that are included in new instances of {Core} 
     module ClassMethods
       include Plugins

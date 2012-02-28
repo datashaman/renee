@@ -41,23 +41,36 @@ module Renee
       #  respond { status 200; body "Yay!" }
       #  respond("Hello", 200, "foo" => "bar")
       #
-      def respond(body=[], status=200, header={}, &blk)
-        response = Renee::Core::Response.new(body, status, header)
-        response.instance_eval(&blk) if block_given?
-        response.finish
+      def respond(response_body = nil, response_status = nil, response_headers = nil)
+        body(response_body) if response_body
+        status(response_status) if response_status
+        headers(response_headers) if response_headers
+        yield if block_given?
+        raise NoResponseSetError unless @body or @status or @headers
+        Rack::Response.new(@body || [], @status || 200, @headers || {})
       end
 
-      ##
-      # Creates a response by allowing the response header, body and status to be passed into the block.
-      #
-      # @example
-      #  respond! { status 200; body "Yay!" }
-      #
-      # @param  (see #respond)
-      # @see #respond
-      def respond!(*args, &blk)
-        halt respond(*args, &blk)
+      def respond!(response_body = nil, response_status = nil, response_headers = nil, &blk)
+        halt respond(response_body, response_status, response_headers, &blk)
       end
+
+      def status(code)
+        @status = code
+      end
+
+      def body(*args)
+        @body ||= []
+        @body.concat(args) unless args.empty?
+        @body
+      end
+
+      def header(headers)
+        @headers ||= {}
+        headers.each do |k, v|
+          @headers[k.to_s] = v.to_s
+        end
+      end
+      alias_method :headers, :header
 
       # Interprets responses returns by #halt.
       #
@@ -80,7 +93,7 @@ module Renee
         when String  then Renee::Core::Response.new(response).finish
         when Integer then Renee::Core::Response.new("Status code #{response}", response).finish
         when Symbol  then interpret_response(HTTP_CODES[response] || response.to_s)
-        when Proc    then instance_eval(&response)
+        when Proc    then response.call
         else              response # pass through response
         end
       end
