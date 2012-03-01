@@ -26,12 +26,12 @@ module Renee
               rescue NotMatchedError => e
                 unless @requested_http_methods.empty?
                   throw :halt, 
-                    Renee::Core::Response.new(
+                    Rack::Response.new(
                       "Method #{request.request_method} unsupported, use #{@requested_http_methods.join(", ")} instead", 405,
                       {'Allow' => @requested_http_methods.join(", ")}).finish
                 end
               end
-              Renee::Core::Response.new("Not found", 404).finish
+              Rack::Response.new("Not found", 404).finish
             end
             self.class.after_blocks.each { |a| out = instance_exec(out, &a) }
             out

@@ -28,7 +28,7 @@ module Renee
       #
       #
       # @example
-      #     get { halt run proc { |env| Renee::Core::Response.new("Hello!").finish } }
+      #     get { halt run proc { |env| Rack::Response.new("Hello!").finish } }
       #
       def run(app = nil, &blk)
         raise "You cannot supply both a block and an app" unless app.nil? ^ blk.nil?
@@ -40,7 +40,7 @@ module Renee
       #
       # @see #run!
       # @example
-      #     get { run proc { |env| Renee::Core::Response.new("Hello!").finish } }
+      #     get { run proc { |env| Rack::Response.new("Hello!").finish } }
       #
       def run!(app = nil, &blk)
         halt run(app, &blk)

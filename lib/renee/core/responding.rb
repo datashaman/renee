@@ -95,11 +95,11 @@ module Renee
         when Array   then
           case response.size
           when 3 then response
-          when 2 then Renee::Core::Response.new(response[1], HTTP_CODES[response[0]] || response[0]).finish
+          when 2 then Rack::Response.new(response[1], HTTP_CODES[response[0]] || response[0]).finish
           else raise "I don't know how to render #{response.inspect}"
           end
-        when String  then Renee::Core::Response.new(response).finish
-        when Integer then Renee::Core::Response.new("Status code #{response}", response).finish
+        when String  then Rack::Response.new(response).finish
+        when Integer then Rack::Response.new("Status code #{response}", response).finish
         when Symbol  then interpret_response(HTTP_CODES[response] || response.to_s)
         when Proc    then response.call
         else              response # pass through response
