@@ -92,7 +92,7 @@ arbitrary variable types, transform them, and handle error cases in one, easy pl
     }.setup {
       register_variable_type(:hex, /[0-9a-f]{6}/).
         on_transform { |v| v.to_i(16) }.
-        raise_on_error!
+        halt_on_error!
     }
 
 Now, let's throw some requests against this. If we go to `http://127.0.0.1:9393/color/ff99ff`, we'll get a nice fuchsia. Try `http://127.0.0.1:9393/color/blue` and you'll get a 400. Too bad.
@@ -109,7 +109,7 @@ Okay, so, writing blocks is fun, but, it can get a bit indent-y when we don't re
     }.setup {
       register_variable_type(:hex, /[0-9a-f]{6}/).
         on_transform { |v| v.to_i(16) }.
-        raise_on_error!
+        halt_on_error!
     }
 
 You can easily consume chaining yourself, if you want to implement your own routing methods. Find out [more](/chaining)!

@@ -26,7 +26,7 @@ module Renee
       # Convienence method to creating halting error handler.
       # @param [Symbol, Integer] error_code The HTTP code to halt with.
       # @see #interpret_response
-      def raise_on_error!(error_code = :bad_request)
+      def halt_on_error!(error_code = :bad_request)
         on_error { halt error_code }
         self
       end

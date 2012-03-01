@@ -10,10 +10,10 @@ To create a variable type, in your [setup block](/settings), add a #register_var
     register_variable_type(:hex,       # The name
       /[0-9a-f]{6}/).                  # Part to capture
       on_transform { |v| v.to_i(16) }. # How to transform
-      raise_on_error!                  # What to do when you can't
+      halt_on_error!                   # What to do when you can't
                                        #   capture
 
-First, a registered type needs to have a name. Then, a regexp specifying what to match needs to be provided. If you want to transform the result, use `#on_transform` to pass a block to be called when this type is being used. If a type is attempted to be used, and the regexp doesn't manage to capture anything, the error handler is used to determine what to do. By default, there is no error handler, and so, your programs execution will continue normally. However, if you use`#on_error`, you can supply a block to be called in the event of an error. As a convenience, there is a `#raise_on_error!` method that will halt with a 400, or, if you choose, any HTTP error code you wish (which is an optional parameter to `#raise_on_error!`).
+First, a registered type needs to have a name. Then, a regexp specifying what to match needs to be provided. If you want to transform the result, use `#on_transform` to pass a block to be called when this type is being used. If a type is attempted to be used, and the regexp doesn't manage to capture anything, the error handler is used to determine what to do. By default, there is no error handler, and so, your programs execution will continue normally. However, if you use`#on_error`, you can supply a block to be called in the event of an error. As a convenience, there is a `#halt_on_error!` method that will halt with a 400, or, if you choose, any HTTP error code you wish (which is an optional parameter to `#halt_on_error!`).
 
 ## Default types
 
