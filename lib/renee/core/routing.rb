@@ -192,6 +192,17 @@ module Renee
       end
       chainable :put
 
+      # Respond to a PATCH request and yield the block.
+      #
+      # @example
+      #   put { halt [200, {}, "hello world"] }
+      #
+      # @api public
+      def patch(&blk)
+        blk ? request_method('PATCH', &blk) : create_chain_proxy(:patch)
+      end
+      chainable :patch
+
       # Respond to a DELETE request and yield the block.
       #
       # @example
