@@ -20,6 +20,27 @@ describe Renee::Core::Responding do
       assert_equal 'Status code 404', response.body
     end
 
+    it "should respond with a 404 if the path isn't matched" do
+      mock_app do
+        path('hello') do
+          halt :ok
+        end
+      end
+      get '/'
+      assert_equal 404,         response.status
+      assert_equal 'Not found', response.body
+    end
+
+    it "should respond with a 404 if the path isn't matched" do
+      mock_app do
+        get {}
+        post {}
+      end
+      put '/'
+      assert_equal 405,         response.status
+      assert_equal 'GET, POST', response.headers['Allow']
+    end
+
     it "should render from a string" do
       mock_app do
         path('/') { halt "hello!" }

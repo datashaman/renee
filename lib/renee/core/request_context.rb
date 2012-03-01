@@ -22,6 +22,7 @@ module Renee
         idx = 0
         next_app = proc do |env|
           if idx == self.class.middlewares.size
+            @requested_http_methods = []
             @env, @request = env, Rack::Request.new(env)
             @detected_extension = env['PATH_INFO'][/\.([^\.\/]+)$/, 1]
             # TODO clear template cache in development? `template_cache.clear`
@@ -29,10 +30,16 @@ module Renee
               begin
                 self.class.before_blocks.each { |b| instance_eval(&b) }
                 instance_eval(&self.class.application_block)
+                raise NotMatchedError
               rescue ClientError => e
                 e.response ? instance_eval(&e.response) : halt("There was an error with your request", 400)
               rescue NotMatchedError => e
-                # unmatched, continue on
+                unless @requested_http_methods.empty?
+                  throw :halt, 
+                    Renee::Core::Response.new(
+                      "Method #{request.request_method} unsupported, use #{@requested_http_methods.join(", ")} instead", 405,
+                      {'Allow' => @requested_http_methods.join(", ")}).finish
+                end
               end
               Renee::Core::Response.new("Not found", 404).finish
             end

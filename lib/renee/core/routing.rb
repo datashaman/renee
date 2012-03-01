@@ -314,14 +314,19 @@ module Renee
         script_part = env['PATH_INFO'][0, part.size]
         env['PATH_INFO'] = env['PATH_INFO'].slice(part.size, env['PATH_INFO'].size)
         env['SCRIPT_NAME'] += script_part
+        @requested_http_methods.clear
         yield script_part
         raise NotMatchedError
       end
 
       def request_method(method)
-        if env['REQUEST_METHOD'] == method && complete?
-          yield
-          raise NotMatchedError
+        if complete?
+          if env['REQUEST_METHOD'] == method
+            yield
+            raise NotMatchedError
+          else
+            @requested_http_methods << method
+          end
         end
       end
     end
