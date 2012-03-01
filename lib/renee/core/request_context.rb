@@ -1,15 +1,5 @@
 module Renee
   class Core
-    module ClassMethods
-      def use(mw, *args, &blk)
-        middlewares << [mw, args, blk]
-      end
-
-      def middlewares
-        @middlewares ||= []
-      end
-    end
-
     # This module deals with the Rack#call compilance. It defines #call and also defines several critical methods
     # used by interaction by other application modules.
     module RequestContext

@@ -43,6 +43,16 @@ module Renee
       # The application block used to create your application.
       attr_reader :application_block
 
+      # Specify a middleware to use before calling your application.
+      def use(mw, *args, &blk)
+        middlewares << [mw, args, blk]
+      end
+
+      # Retreive the list of currently available middlewares.
+      def middlewares
+        @middlewares ||= []
+      end
+
       # Provides a rack interface compliant call method. This method creates a new instance of your class and calls
       # #call on it.
       def call(env)
