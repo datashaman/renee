@@ -29,6 +29,14 @@ module Renee
         throw :halt, interpret_response(response.size == 1 ? response.first : response)
       end
 
+      # Halts current processing to the top-level calling Renee application and uses that as a response.
+      # This version of halt does not pass your response through #interpret_response.
+      # @param [Object] response The response to use.
+      # @see #interpret_response, #halt
+      def halt!(response)
+        throw :halt, response
+      end
+
       ##
       # Creates a response by allowing the response header, body and status to be passed into the block.
       #
