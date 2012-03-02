@@ -16,9 +16,9 @@ require 'renee/core/plugins'
 module Renee
   # @example
   #     Renee.core { path('/hello') { halt :ok } }
-  def self.core(&blk)
+  def self.core(&app)
     cls = Class.new(Renee::Core)
-    cls.app(&blk) if blk
+    cls.run(&app) if app
     cls
   end
 
@@ -60,7 +60,7 @@ module Renee
 
       # Allows you to set the #application_block on your class.
       # @yield The application block
-      def app(&app)
+      def run(&app)
         @application_block = app
         setup do
           register_variable_type :integer, IntegerMatcher

@@ -12,7 +12,7 @@ require 'renee/url_generation'
 #     }
 def Renee(&blk)
   app_class = Class.new(Renee::Application)
-  app_class.app(&blk)
+  app_class.run(&blk)
   app_class
 end
 

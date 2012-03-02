@@ -120,7 +120,7 @@ Not happy with what Renee gives you? You can easily subclass to define whatever 
 
     :::ruby
     class MyApp < Renee::Application
-      app {
+      run {
         path('justice/great').get.for_great_justice!
         halt 404, "justice not found"
       }
