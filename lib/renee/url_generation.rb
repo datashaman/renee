@@ -8,8 +8,21 @@ module Renee
     # Current version of Renee::URLGeneration
     VERSION = Renee::VERSION
 
+    # @api private
     def self.included(o)
       o.extend(ClassMethods)
+    end
+
+    # Generates a url
+    # @see ClassMethods#url
+    def make_url(name, *args)
+      self.class.url(name, *args)
+    end
+
+    # Generates a path
+    # @see ClassMethods#path
+    def make_path(name, *args)
+      self.class.path(name, *args)
     end
 
     # Class-methods included by this module.
