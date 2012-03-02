@@ -9,7 +9,6 @@ require 'renee/core/request_context'
 require 'renee/core/transform'
 require 'renee/core/routing'
 require 'renee/core/responding'
-require 'renee/core/env_accessors'
 require 'renee/core/plugins'
 
 # Top-level Renee constant
@@ -101,7 +100,6 @@ module Renee
     include Responding
     include RackInteraction
     include Transform
-    include EnvAccessors
 
     class << self
       include ClassMethods
