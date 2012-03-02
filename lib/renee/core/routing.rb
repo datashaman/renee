@@ -40,11 +40,11 @@ module Renee
       #   end
       #
       # @api public
-      def path(p, &blk)
-        if blk
+      def path(p)
+        if block_given?
           p = p[1, p.size] if p[0] == ?/
           extension_part = detected_extension ? "|\\.#{Regexp.quote(detected_extension)}" : ""
-          part(/^\/#{Regexp.quote(p)}(?=\/|$#{extension_part})/, &blk)
+          part(/^\/#{Regexp.quote(p)}(?=\/|$#{extension_part})/) { yield }
         else
           create_chain_proxy(:path, p)
         end
@@ -87,14 +87,17 @@ module Renee
       #   GET /test/hey/there  #=> [200, {}, 'hey-there']
       #
       # @api public
-      def variable(*types, &blk)
-        blk ? complex_variable(types, '/', types.empty? ? 1 : types.size , &blk) : create_chain_proxy(:variable, *types)
+      def variable(*types)
+        block_given? ?
+          complex_variable(types, '/', types.empty? ? 1 : types.size) { |*a| yield *a } :
+          create_chain_proxy(:variable, *types)
       end
       alias_method :var, :variable
       chainable :variable, :var
 
-      def optional_variable(type = nil, &blk)
-        blk ? complex_variable(type, '/', 0..1) { |vars| blk[vars.first] } : create_chain_proxy(:variable, type)
+      def optional_variable(type = nil)
+        block_given? ?
+          complex_variable(type, '/', 0..1) { |vars| yield vars.first } : create_chain_proxy(:variable, type)
       end
       alias_method :optional, :optional_variable
       chainable :optional, :optional_variable
@@ -102,8 +105,10 @@ module Renee
       # Same as variable except you can match multiple variables with the same type.
       # @param [Range, Integer] count The number of parameters to capture.
       # @param [Symbol] type The type to use for match.
-      def multi_variable(count, type = nil, &blk)
-        blk ? complex_variable(type, '/', count, &blk) : create_chain_proxy(:multi_variable, count, type)
+      def multi_variable(count, type = nil)
+        block_given? ?
+          complex_variable(type, '/', count) { |*mv| yield *mv } :
+          create_chain_proxy(:multi_variable, count, type)
       end
       alias_method :multi_var, :multi_variable
       alias_method :mvar, :multi_variable
@@ -111,8 +116,10 @@ module Renee
 
       # Same as variable except it matches indefinitely.
       # @param [Symbol] type The type to use for match.
-      def repeating_variable(type = nil, &blk)
-        blk ? complex_variable(type, '/', nil, &blk) : create_chain_proxy(:repeating_variable, type)
+      def repeating_variable(type = nil)
+        block_given? ?
+          complex_variable(type, '/', nil) { |*mv| yield *mv } :
+          create_chain_proxy(:repeating_variable, type)
       end
       alias_method :glob, :repeating_variable
       chainable :repeating_variable, :glob
@@ -120,8 +127,10 @@ module Renee
       # Match parts off the path as variables without a leading slash.
       # @see #variable
       # @api public
-      def partial_variable(type = nil, &blk)
-        blk ? complex_variable(type, nil, 1, &blk) : create_chain_proxy(:partial_variable, type)
+      def partial_variable(type = nil)
+        block_given? ?
+          complex_variable(type, nil, 1) { |v| yield v } :
+          create_chain_proxy(:partial_variable, type)
       end
       alias_method :part_var, :partial_variable
       chainable :partial_variable, :part_var
@@ -143,8 +152,8 @@ module Renee
       #   no_extension { |path| halt [200, {}, path] }
       #
       # @api public
-      def no_extension(&blk)
-        blk.call unless detected_extension
+      def no_extension
+        yield unless detected_extension
       end
 
       # Match any remaining path.
@@ -153,8 +162,10 @@ module Renee
       #   remainder { |path| halt [200, {}, path] }
       #
       # @api public
-      def remainder(&blk)
-        blk ? with_path_part(env['PATH_INFO']) { |var| blk.call(var) } : create_chain_proxy(:remainder)
+      def remainder
+        block_given? ?
+          with_path_part(env['PATH_INFO']) { |var| yield var } :
+          create_chain_proxy(:remainder)
       end
       alias_method :catchall, :remainder
       chainable :remainder, :catchall
@@ -165,8 +176,8 @@ module Renee
       #   get { halt [200, {}, "hello world"] }
       #
       # @api public
-      def get(&blk)
-        blk ? request_method('GET', &blk) : create_chain_proxy(:get)
+      def get
+        block_given? ? request_method('GET') { yield } : create_chain_proxy(:get)
       end
       chainable :get
 
@@ -176,8 +187,8 @@ module Renee
       #   post { halt [200, {}, "hello world"] }
       #
       # @api public
-      def post(&blk)
-        blk ? request_method('POST', &blk) : create_chain_proxy(:post)
+      def post
+        block_given? ? request_method('POST') { yield } : create_chain_proxy(:get)
       end
       chainable :post
 
@@ -187,8 +198,8 @@ module Renee
       #   put { halt [200, {}, "hello world"] }
       #
       # @api public
-      def put(&blk)
-        blk ? request_method('PUT', &blk) : create_chain_proxy(:put)
+      def put
+        block_given? ? request_method('PUT') { yield } : create_chain_proxy(:get)
       end
       chainable :put
 
@@ -198,8 +209,8 @@ module Renee
       #   put { halt [200, {}, "hello world"] }
       #
       # @api public
-      def patch(&blk)
-        blk ? request_method('PATCH', &blk) : create_chain_proxy(:patch)
+      def patch
+        block_given? ? request_method('PATCH') { yield } : create_chain_proxy(:get)
       end
       chainable :patch
 
@@ -209,8 +220,8 @@ module Renee
       #   delete { halt [200, {}, "hello world"] }
       #
       # @api public
-      def delete(&blk)
-        blk ? request_method('DELETE', &blk) : create_chain_proxy(:delete)
+      def delete
+        block_given? ? request_method('DELETE') { yield } : create_chain_proxy(:get)
       end
       chainable :delete
 
@@ -220,9 +231,9 @@ module Renee
       #   complete { halt [200, {}, "hello world"] }
       #
       # @api public
-      def complete(&blk)
-        if blk
-          with_path_part(env['PATH_INFO']) { blk.call } if complete?
+      def complete
+        if block_given?
+          with_path_part(env['PATH_INFO']) { yield } if complete?
         else
           create_chain_proxy(:complete)
         end
@@ -238,7 +249,8 @@ module Renee
       #
       # @api public
       def complete?
-        (detected_extension and env['PATH_INFO'] =~ /^\/?(\.#{Regexp.quote(detected_extension)}\/?)?$/) || (detected_extension.nil? and env['PATH_INFO'] =~ /^\/?$/)
+        (detected_extension and env['PATH_INFO'] =~ /^\/?(\.#{Regexp.quote(detected_extension)}\/?)?$/) ||
+          (detected_extension.nil? and env['PATH_INFO'] =~ /^\/?$/)
       end
 
       # Match only when the path is ''.
@@ -247,10 +259,10 @@ module Renee
       #   empty { halt [200, {}, "hello world"] }
       #
       # @api public
-      def empty(&blk)
-        if blk
+      def empty
+        if block_given?
           if env['PATH_INFO'] == ''
-            with_path_part(env['PATH_INFO']) { blk.call }
+            with_path_part(env['PATH_INFO']) { yield }
           end
         else
           create_chain_proxy(:empty)
