@@ -5,13 +5,9 @@ things to do to make renee more complete
 - authentication
 - admin
 
-things to do to make renee faster
-
-- shorten the callstack in routing, it can get long
-
 things to do to make renee easier to deal with
 
-- fenerators (a la padrino)
+- generators (a la padrino)
 
 things to do to explain it better
 
