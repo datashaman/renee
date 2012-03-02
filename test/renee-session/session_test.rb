@@ -9,7 +9,7 @@ describe Renee::Session do
   end
 
   it "should create a session" do
-    @app.app do
+    @app.run do
       session[:test] = 'hello'
       path('test').get.halt "why #{session[:test]}"
     end
@@ -18,7 +18,7 @@ describe Renee::Session do
   end
 
   it "should persist values across multiple calls" do
-    @app.app do
+    @app.run do
       out = session[:test] || "first"
       session[:test] = 'hello'
       path('test').get.halt out
