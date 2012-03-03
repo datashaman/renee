@@ -107,7 +107,7 @@ module Renee
       # @param [Symbol] type The type to use for match.
       def multi_variable(count, type = nil)
         block_given? ?
-          complex_variable(type, '/', count) { |*mv| yield *mv } :
+          complex_variable(type, '/', count) { |mv| yield mv } :
           create_chain_proxy(:multi_variable, count, type)
       end
       alias_method :multi_var, :multi_variable
@@ -118,7 +118,7 @@ module Renee
       # @param [Symbol] type The type to use for match.
       def repeating_variable(type = nil)
         block_given? ?
-          complex_variable(type, '/', nil) { |*mv| yield *mv } :
+          complex_variable(type, '/', nil) { |mv| yield mv } :
           create_chain_proxy(:repeating_variable, type)
       end
       alias_method :glob, :repeating_variable
