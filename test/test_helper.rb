@@ -4,6 +4,11 @@ require 'minitest/autorun'
 gem 'rack-test'
 require 'rack/test'
 
+# TODO remove once i get off the plane
+$:.unshift File.expand_path("../../renee/lib", __FILE__)
+$:.unshift File.expand_path("../../../renee-core/lib", __FILE__)
+require 'renee'
+
 class ColoredIO
   ESC = "\e["
   NND = "#{ESC}0m"
@@ -36,12 +41,17 @@ MiniTest::Unit.output = ColoredIO.new(MiniTest::Unit.output)
 class MiniTest::Spec
   include Rack::Test::Methods
 
+  def blog_app
+    file = File.expand_path("../../examples/blog/config.ru", __FILE__)
+    @app ||= Rack::Builder.parse_file(file).first
+  end
+
   # Sets up a Sinatra::Base subclass defined with the block
   # given. Used in setup or individual spec methods to establish
   # the application.
   def mock_app(&block)
     path = default_views_path
-    @app = Renee.core(&block).setup {
+    @app = Renee(&block).setup {
       views_path(path) if respond_to?(:views_path)
     }
   end

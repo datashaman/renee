@@ -1,16 +1,15 @@
 source :rubygems
 
-gem 'renee', :path => '.'
-gem 'renee-core', :path => '.'
-gem 'renee-render', :path => '.'
-gem 'renee-session', :path => '.'
-gem 'renee-url-generation', :path => '.'
+gemspec
+gemspec :path => '../renee-core'
 
-gem 'rdiscount'
-gem 'haml'
-gem 'rack-codehighlighter'
-gem 'rack-google-analytics'
-gem 'coderay'
+group :site do
+  gem 'rdiscount'
+  gem 'haml'
+  gem 'rack-codehighlighter'
+  gem 'rack-google-analytics'
+  gem 'coderay'
+end
 
 group :development do
   gem 'minitest', '~> 2.11.1'

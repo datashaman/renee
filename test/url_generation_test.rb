@@ -4,7 +4,7 @@ require File.expand_path('../test_helper', __FILE__)
 
 describe Renee::URLGeneration do
   before do
-    @r = generator
+    @r = Renee::URLGeneration::GeneratorSet.new
   end
 
   it "should allow registration and generation of paths" do

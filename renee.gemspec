@@ -18,9 +18,10 @@ Gem::Specification.new do |s|
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
 
-  s.add_runtime_dependency 'rack', "~> 1.4.0"
+  s.add_runtime_dependency 'rack', ">= 1.3.0"
   s.add_runtime_dependency 'tilt', "~> 1.3.3"
   s.add_runtime_dependency 'callsite', '~> 0.0.6'
+  s.add_runtime_dependency 'renee-core', '~> 0.4.0'
 
   s.add_development_dependency 'minitest', "~> 2.11.1"
   s.add_development_dependency 'rake'

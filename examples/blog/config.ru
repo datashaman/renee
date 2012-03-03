@@ -40,6 +40,7 @@ run Renee {
     end
   end
 }.setup {
+  use Rack::Lint
   use Rack::MethodOverride
   views_path File.expand_path(File.dirname(__FILE__) + "/views")
 }

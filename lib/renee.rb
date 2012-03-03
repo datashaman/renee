@@ -1,5 +1,6 @@
-require 'renee/version'
 require 'renee/core'
+
+require 'renee/version'
 require 'renee/render'
 require 'renee/session'
 require 'renee/url_generation'

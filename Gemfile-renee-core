@@ -1,8 +1,0 @@
-source :rubygems
-
-gemspec :name => 'renee-core'
-
-group :development do
-  gem 'rdiscount'
-  gem 'rake'
-end

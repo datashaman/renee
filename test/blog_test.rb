@@ -8,6 +8,7 @@ describe "Blog example" do
     assert_equal 200, response.status
     assert_equal "
 <p>No posts</p>
+
 <br/>
 <form action=/ method=post>
   Title
@@ -29,6 +30,7 @@ describe "Blog example" do
     <br />
     hey hey hey
   </p>
+
 
 
 <br/>
@@ -53,6 +55,7 @@ describe "Blog example" do
     <br />
     hey hey hey
   </p>
+
 
 
 <br/>
