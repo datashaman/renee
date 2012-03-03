@@ -47,7 +47,7 @@ describe Renee::URLGeneration do
   it "should allow #prefix calls for nesting common path parts" do
     r = @r
     r.prefix('/foo') do
-      r.register(:foo_bar, '/bar')
+      register(:foo_bar, '/bar')
     end
     assert_equal '/foo/bar', r.path(:foo_bar)
   end

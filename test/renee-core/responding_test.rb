@@ -105,7 +105,7 @@ describe Renee::Core::Responding do
     it "should allow respond" do
       mock_app do
         get do
-          halt(respond { |r| status 403; headers :foo => "bar"; body "hello!" })
+          halt(respond { status 403; headers :foo => "bar"; body "hello!" })
         end
       end
       get "/"

@@ -5,6 +5,6 @@ require File.expand_path('../../test_helper', __FILE__)
 
 class MiniTest::Spec
   def generator
-    Class.new { include Renee::URLGeneration }
+    @generator ||= Renee::URLGeneration::GeneratorSet.new
   end
 end
