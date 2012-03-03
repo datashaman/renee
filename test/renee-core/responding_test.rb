@@ -31,7 +31,7 @@ describe Renee::Core::Responding do
       assert_equal 'Not found', response.body
     end
 
-    it "should respond with a 404 if the path isn't matched" do
+    it "should respond with a 405 if the path is matched but the request method isn't" do
       mock_app do
         get {}
         post {}
