@@ -4,9 +4,6 @@ require 'minitest/autorun'
 gem 'rack-test'
 require 'rack/test'
 
-# TODO remove once i get off the plane
-$:.unshift File.expand_path("../../renee/lib", __FILE__)
-$:.unshift File.expand_path("../../../renee-core/lib", __FILE__)
 require 'renee'
 
 class ColoredIO
