@@ -52,7 +52,7 @@ module Renee
     ##
     # Exception responsible for when an expected template does not exist.
     #
-    class TemplateNotFound < RuntimeError; end
+    TemplateNotFound = Class.new(RuntimeError)
 
     # Same as render but automatically halts.
     # @param  (see #render)
