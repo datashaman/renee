@@ -1,7 +1,7 @@
 source :rubygems
 
 gemspec
-gemspec :path => '../renee-core'
+gem 'renee', '0.4.0.pre2'
 
 group :site do
   gem 'rdiscount'
