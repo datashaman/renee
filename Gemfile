@@ -1,7 +1,6 @@
 source :rubygems
 
 gemspec
-gem 'renee', '0.4.0.pre2'
 
 group :site do
   gem 'rdiscount'
