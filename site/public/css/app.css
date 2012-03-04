@@ -2,6 +2,7 @@ body {
   font-family: "Helvetica Neue", "Helvetica", Arial, sans-serif;
   font-weight: 500;
   background-color: #F0F0E6;
+  padding: 0 2em;
 }
 
 body .container {
