@@ -4,7 +4,9 @@ describe Renee::Session do
   before do
     @app = Class.new(Renee::Core) do
       include Renee::Session
-      session :cookie
+
+      # Add a secret to stop the complaining
+      session :cookie, :secret => 'testing'
     end
   end
 
