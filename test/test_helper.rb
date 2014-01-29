@@ -3,6 +3,10 @@ gem 'minitest'
 require 'minitest/autorun'
 gem 'rack-test'
 require 'rack/test'
+gem 'erubis'
+require 'erubis'
+gem 'haml'
+require 'haml'
 
 require 'renee'
 
@@ -32,7 +36,7 @@ class ColoredIO
   end
 end
 
-MiniTest::Unit.output = ColoredIO.new(MiniTest::Unit.output)
+# MiniTest::Unit.output = ColoredIO.new(MiniTest::Unit.output)
 
 ## TEST HELPERS
 class MiniTest::Spec
