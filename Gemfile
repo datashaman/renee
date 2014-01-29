@@ -16,5 +16,5 @@ group :development do
   # gem 'shotgun'
   # gem 'rake'
   # gem 'json'
-  gem 'yard', '~> 0.7.4'
+  gem 'yard'
 end

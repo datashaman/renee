@@ -8,6 +8,9 @@ require 'erubis'
 gem 'haml'
 require 'haml'
 
+require 'tilt/erubis'
+require 'tilt/haml'
+
 require 'renee'
 
 class ColoredIO

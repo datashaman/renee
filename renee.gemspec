@@ -18,16 +18,15 @@ Gem::Specification.new do |s|
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
 
-  s.add_runtime_dependency 'rack', ">= 1.3.0"
-  s.add_runtime_dependency 'tilt', "~> 1.3.3"
-  s.add_runtime_dependency 'callsite', '~> 0.0.6'
-  s.add_runtime_dependency 'renee-core', '0.4.0.pre2'
+  s.add_runtime_dependency 'rack'
+  s.add_runtime_dependency 'tilt'
+  s.add_runtime_dependency 'callsite'
 
-  s.add_development_dependency 'minitest', "~> 2.11.1"
+  s.add_development_dependency 'minitest'
   s.add_development_dependency 'rake'
   s.add_development_dependency 'bundler'
-  s.add_development_dependency "rack-test", ">= 0.5.0"
-  s.add_development_dependency "haml", ">= 2.2.0"
+  s.add_development_dependency "rack-test"
+  s.add_development_dependency "haml"
   s.add_development_dependency "json"
   s.add_development_dependency "shotgun"
 end
