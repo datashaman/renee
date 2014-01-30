@@ -201,7 +201,7 @@ module Renee
     #
     # @example
     #  find_template("./views", "index", :erb) => ["path/to/index.erb", :erb]
-    #  find_template("./views", "foo")         => ["path/to/index.haml", :haml]
+    #  find_template("./views", "foo")         => ["path/to/foo.haml", :haml]
     #
     # @api private
     #
