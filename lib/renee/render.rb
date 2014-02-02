@@ -27,7 +27,12 @@ module Renee
       #
       # @api public
       def views_path(path = nil)
-        path ? @views_path = path : @views_path
+        if path
+            path = [path] unless path.respond_to?(:to_ary)
+            @views_path = path
+        else
+            @views_path
+        end
       end
 
       # Gets or sets the default encoding used.
@@ -169,7 +174,7 @@ module Renee
       options[:default_encoding] ||= self.class.default_encoding || options[:encoding] || "utf-8"
 
       locals         = options.delete(:locals) || {}
-      views          = options.delete(:views)  || self.class.views_path || "./views"
+      views          = options.delete(:views)  || self.class.views_path || [ "./views" ]
       layout         = options.key?(:layout) ? options[:layout] : self.class.default_layout
       layout_engine  = options.delete(:layout_engine)
       # TODO suppress template errors for layouts?
@@ -208,10 +213,21 @@ module Renee
     def find_template(views, name, engine=nil)
       lookup_ext = (engine || File.extname(name.to_s)[1..-1] || "*").to_s
       base_name = name.to_s.chomp(".#{lookup_ext}")
-      file_path = Dir[File.expand_path("#{base_name}.#{lookup_ext}", views)].first
-      engine ||= File.extname(file_path)[1..-1].to_sym if file_path
-      [file_path, engine]
+      folder = views.find do |view_folder|
+        Dir[build_template_path(base_name, lookup_ext, view_folder)].count > 0
+      end
+      if folder.nil?
+        false
+      else
+        file_path = Dir[build_template_path(base_name, lookup_ext, folder)].first
+        engine ||= File.extname(file_path)[1..-1].to_sym if file_path
+        [file_path, engine]
+      end
     end # find_template
+
+    def build_template_path(base_name, lookup_ext, folder)
+        File.expand_path("#{base_name}.#{lookup_ext}", folder)
+    end
 
     # Maintain Tilt::Cache of the templates.
     def template_cache
