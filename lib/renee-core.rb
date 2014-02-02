@@ -80,7 +80,7 @@ module Renee
       def register_variable_type(name, matcher)
         matcher = case matcher
         when Transform::Matcher then matcher
-        when Array              then Transform::Matcher.new(matcher.map{|m| variable_types[m]})
+        when Array              then Transform::Matcher.new(matcher.map{|match| variable_types[match]})
         when Symbol             then variable_types[matcher]
         else                         Transform::Matcher.new(matcher)
         end
@@ -93,46 +93,25 @@ module Renee
 
     # Provides a rack interface compliant call method.
     # @param[Hash] env The rack environment.
-    def call(e)
-      initialize_plugins
+    def call(env)
+      self.class.initialize_plugins
       idx = 0
+      middlewares = self.class.middlewares
       next_app = proc do |env|
-        if idx == self.class.middlewares.size
-          @requested_http_methods = []
-          @env, @request = env, Rack::Request.new(env)
-          @detected_extension = env['PATH_INFO'][/\.([^\.\/]+)$/, 1]
-          # TODO clear template cache in development? `template_cache.clear`
-          out = catch(:halt) do
-            begin
-              self.class.before_blocks.each { |b| instance_eval(&b) }
-              instance_eval(&self.class.application_block)
-              raise NotMatchedError
-            rescue ClientError => e
-              e.response ? instance_eval(&e.response) : halt("There was an error with your request", 400)
-            rescue NotMatchedError => e
-              unless @requested_http_methods.empty?
-                throw :halt, 
-                  Rack::Response.new(
-                    "Method #{request.request_method} unsupported, use #{@requested_http_methods.join(", ")} instead", 405,
-                    {'Allow' => @requested_http_methods.join(", ")}).finish
-              end
-            end
-            Rack::Response.new("Not found", 404).finish
-          end
-          self.class.after_blocks.each { |a| out = instance_exec(out, &a) }
-          out
+        if idx == middlewares.size
+            call_end(env)
         else
-          middleware = self.class.middlewares[idx]
+          middleware = middlewares[idx]
           idx += 1
           middleware[0].new(next_app, *middleware[1], &middleware[2]).call(env)
         end
       end
-      next_app[e]
+      next_app[env]
     end # call
 
-    def initialize_plugins
-      self.class.init_blocks.each { |init_block| self.class.class_eval(&init_block) }
-      self.class.send(:define_method, :initialize_plugins) { }
+    def self.initialize_plugins
+      self.init_blocks.each { |init_block| self.class_eval(&init_block) }
+      self.send(:define_method, :initialize_plugins) { }
     end
 
     include Chaining
@@ -142,5 +121,36 @@ module Renee
     include Transform
 
     extend ClassMethods
+
+    private
+    def call_end(env)
+        klass = self.class
+
+        @requested_http_methods = []
+        @env, @request = env, Rack::Request.new(env)
+        @detected_extension = env['PATH_INFO'][/\.([^\.\/]+)$/, 1]
+        # TODO clear template cache in development? `template_cache.clear`
+        out = catch(:halt) do
+            begin
+                klass.before_blocks.each { |block| instance_eval(&block) }
+                instance_eval(&klass.application_block)
+                raise NotMatchedError
+            rescue ClientError => error
+                response = error.response
+                response ? instance_eval(&response) : halt("There was an error with your request", 400)
+            rescue NotMatchedError
+                unless @requested_http_methods.empty?
+                    allowed_methods = @requested_http_methods.join(", ")
+                    throw :halt, 
+                        Rack::Response.new(
+                            "Method #{request.request_method} unsupported, use #{allowed_methods} instead", 405,
+                            {'Allow' => allowed_methods }).finish
+                end
+            end
+            Rack::Response.new("Not found", 404).finish
+        end
+        klass.after_blocks.each { |block| out = instance_exec(out, &block) }
+        out
+    end
   end
 end

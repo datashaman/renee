@@ -13,14 +13,14 @@ module Renee
     module Chaining
       # @private
       class ChainingProxy
-        def initialize(target, m, args = nil)
+        def initialize(target, method, args = nil)
           @target, @calls = target, []
-          @calls << [m, args]
+          @calls << [method, args]
         end
 
-        def method_missing(m, *args, &blk)
-          @calls << [m, args]
-          if blk.nil? && @target.class.respond_to?(:chainable?) && @target.class.chainable?(m)
+        def method_missing(method, *args, &blk)
+          @calls << [method, args]
+          if blk.nil? && @target.class.respond_to?(:chainable?) && @target.class.chainable?(method)
             self
           else
             inner_args = []
@@ -57,8 +57,8 @@ module Renee
         ChainingProxy.new(self, method_name, args)
       end
 
-      def self.included(o)
-        o.extend(ClassMethods)
+      def self.included(object)
+        object.extend(ClassMethods)
       end
     end
   end

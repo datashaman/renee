@@ -17,4 +17,9 @@ group :development do
   # gem 'rake'
   # gem 'json'
   gem 'yard'
+
+  # Code analysis tools
+  gem 'flay'
+  gem 'flog'
+  gem 'reek'
 end
