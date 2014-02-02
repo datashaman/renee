@@ -1,4 +1,5 @@
 require 'renee/version'
+require 'json'
 
 module Renee
     # This module is responsible for handling the rendering of

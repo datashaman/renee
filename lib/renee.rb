@@ -1,4 +1,4 @@
-require 'renee/core'
+require_relative './renee-core'
 
 require 'renee/version'
 require 'renee/render'

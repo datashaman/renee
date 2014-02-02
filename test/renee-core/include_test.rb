@@ -1,0 +1,14 @@
+require_relative '../test_helper'
+
+describe "Route::Settings#include" do
+  it "should allow the inclusion of arbitrary modules" do
+    type = { 'Content-Type' => 'text/plain' }
+    @app = Renee.core {
+      halt :ok if respond_to?(:hi)
+    }.setup {
+      include Module.new { def hi; end }
+    }
+    get '/'
+    assert_equal 200,   response.status
+  end
+end

@@ -90,16 +90,19 @@ module Renee
       #
       # @see #register
       def path(name, *args)
-        generator = @url_generators[name]
-        generator ? generator.path(*args) : raise("Generator for #{name} doesn't exist")
+        invoke_generator_method(:path, name, *args)
       end
 
       # Generates a url for a given name.
       # @param (see #path)
       # @see #path
       def url(name, *args)
+        invoke_generator_method(:url, name, *args)
+      end
+
+      def invoke_generator_method(method, name, *args)
         generator = @url_generators[name]
-        generator ? generator.url(*args) : raise("Generator for #{name} doesn't exist")
+        generator ? generator.send(method, *args) : raise("Generator for #{name} doesn't exist")
       end
     end
 
