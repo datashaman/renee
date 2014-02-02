@@ -22,4 +22,7 @@ group :development do
   gem 'flay'
   gem 'flog'
   gem 'reek'
+
+  # Testing tools
+  gem 'simplecov'
 end

@@ -9,8 +9,8 @@ module Renee
     VERSION = Renee::VERSION
 
     # @api private
-    def self.included(o)
-      o.extend(ClassMethods)
+    def self.included(object)
+      object.extend(ClassMethods)
     end
 
     # Generates a url

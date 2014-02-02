@@ -20,7 +20,8 @@ module Renee
 
         def method_missing(method, *args, &blk)
           @calls << [method, args]
-          if blk.nil? && @target.class.respond_to?(:chainable?) && @target.class.chainable?(method)
+          klass = @target.class
+          if blk.nil? && klass.respond_to?(:chainable?) && klass.chainable?(method)
             self
           else
             inner_args = []
@@ -31,7 +32,8 @@ module Renee
                 ret = blk.call(*inner_args) if blk
               else
                 call = @calls.shift
-                ret = call.at(1) ? @target.send(call.at(0), *call.at(1), &callback) : @target.send(call.at(0), &callback) 
+                args = call.at(1) || []
+                ret = @target.send(call.at(0), *args, &callback)
               end
             end
             ret = callback.call
@@ -42,13 +44,13 @@ module Renee
 
       # @private
       module ClassMethods
-        def chainable?(m)
-          method_defined?(:"#{m}_chainable")
+        def chainable?(method)
+          method_defined?(:"#{method}_chainable")
         end
 
         def chainable(*methods)
-          methods.each do |m|
-            define_method(:"#{m}_chainable") { }
+          methods.each do |method|
+            define_method(:"#{method}_chainable") { }
           end
         end
       end
